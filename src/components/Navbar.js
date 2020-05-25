@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
+import BookIcon from '@material-ui/icons/LibraryBooks';
 import ErrorToast from './ErrorToast';
 import Loader from './Loading';
 
@@ -136,6 +137,43 @@ class Navbar extends Component {
             });
     }
 
+    handleUserManualDownload = () => {
+        this.setState({ loading: true, errorDownload: false });
+        if (localStorage.getItem('token')) {
+            apitimeout(pendingTimeout, fetch("/media/uploads/groot/pdfs/user_manual.pdf", {
+                method: "GET"
+            })).
+            then(res => {
+                if (res.status == 200) {
+                    return res.blob();
+                }
+                else {
+                    throw Error(res.statusText);
+                }
+            })
+            .then(result => {
+                const url = window.URL.createObjectURL(new Blob([result]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `user_manual.pdf`);
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+                this.setState({ loading: false, setAnchor: null });
+            })
+            .catch((error) => {
+                this.setState({ loading: false });
+                this.setState({ errorDownload: true });
+                setTimeout(() => {
+                    this.setState({
+                        errorDownload: false
+                    })
+                }, timeout);
+                console.log('Looks like there was a problem in downloading manual \n', error);
+            });
+        }
+    }
+
     handleLogout = () => {
         this.handleMenuClose;
         if (localStorage.getItem('source_host') === 'partner') {
@@ -206,6 +244,10 @@ class Navbar extends Component {
                                 <Button color="primary" className={classes.menuButtonStyle} onClick={this.handleLogout} >
                                     <AccountCircle className={classes.IconStyle} />
                                     Logout
+                                </Button>
+                                <Button color="primary" className={classes.menuButtonStyle} onClick={this.handleUserManualDownload} >
+                                    <BookIcon className={classes.IconStyle} />
+                                    User Manual
                                 </Button>
                                 <Button color="primary" className={classes.menuButtonStyle} onClick={this.handleExcelDownload} >
                                     <DownloadIcon className={classes.IconStyle} />
