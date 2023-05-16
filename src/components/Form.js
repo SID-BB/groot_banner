@@ -17,7 +17,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { json } from "body-parser";
 import Axios from "axios";
-import '../assets/styles/form.css'
+import "../assets/styles/form.css";
 
 const styles = (theme) => ({
   root: {
@@ -240,7 +240,6 @@ class OldComponent extends Component {
           "X-Timestamp": "2021-09-01 10:10:00",
           "X-Tracker": "06973e47-df9d-42ce-80d9-8428020866ef",
         },
-        
       }
     )
       .then((response) => response.json())
@@ -361,13 +360,14 @@ class OldComponent extends Component {
         })
       );
       // Create a new FormData object from the form
+
       const response = await fetch(
         "https://qas16.bigbasket.com/content-svc/static-banner/save",
         {
           method: "POST",
           headers: {
             "x-project": "mm-canary",
-            authorization: "czDnSlbBsG5do8oNAxzzIBGd6w8VMOJN",
+            "authorization": "czDnSlbBsG5do8oNAxzzIBGd6w8VMOJN",
           },
           body: excelData, // Set the request body to the FormData object
         }
@@ -380,6 +380,10 @@ class OldComponent extends Component {
 
       const data = await response.json(); // Parse the response JSON data
       console.log(data); // Log the response data to the console
+      var url = window.location.href;
+      var host = url.split("apluscontent/");
+      var table_url = host[0] + "apluscontent/staticbanners";
+      window.location.href = table_url;
     } catch (error) {
       console.error(error); // Log any errors to the console
     }
@@ -421,21 +425,10 @@ class OldComponent extends Component {
     const { classes } = this.props;
     const { loading } = this.state;
     return (
-      <div
-        
-      className="root"
-      >
-        <h1
-          className="heading"
-        >
-          Image Upload
-        </h1>
+      <div className="root">
+        <h1 className="heading">Image Upload</h1>
         <div className="formItem">
-          <label
-            className="label"
-          >
-            Select Group Names:
-          </label>
+          <label className="label">Select Group Names:</label>
           <Select
             className="select"
             value={this.state.ecNames}
@@ -449,19 +442,15 @@ class OldComponent extends Component {
                   {group.name}
                 </MenuItem>
               ))} */}
-              <MenuItem value={"mandi"}>mandi</MenuItem>
-              <MenuItem value={"bbnow"}>bbnow</MenuItem>
-              <MenuItem value={"meat-express"}>meat-express</MenuItem>
-              <MenuItem value={"pb-fmcg"}>pb-fmcg</MenuItem>
+            <MenuItem value={"mandi"}>mandi</MenuItem>
+            <MenuItem value={"bbnow"}>bbnow</MenuItem>
+            <MenuItem value={"meat-express"}>meat-express</MenuItem>
+            <MenuItem value={"pb-fmcg"}>pb-fmcg</MenuItem>
           </Select>
         </div>
 
         <div className="formItem">
-          <label
-            className="label"
-          >
-            Select size:
-          </label>
+          <label className="label">Select size:</label>
           <Select
             className="select"
             value={this.state.imageSize}
@@ -473,9 +462,7 @@ class OldComponent extends Component {
           </Select>
         </div>
 
-        <div
-          className="formItem"
-        >
+        <div className="formItem">
           <label className="label">Upload Image:</label>
           <TextField
             className="fileInput"
@@ -496,10 +483,7 @@ class OldComponent extends Component {
             required
             error={!this.state.selectedRadio}
           >
-            <FormLabel
-              component="legend"
-              className="label"
-            >
+            <FormLabel component="legend" className="label">
               Device Types:
             </FormLabel>
             <RadioGroup
@@ -544,9 +528,7 @@ class OldComponent extends Component {
             )}
           </FormControl>
         </div>
-        <div
-          className="formItem"
-        >
+        <div className="formItem">
           <FormControlLabel
             className="checkboxLabel"
             control={
@@ -566,9 +548,7 @@ class OldComponent extends Component {
             required
           />
         </div>
-        <div
-          className="formItem"
-        >
+        <div className="formItem">
           <TextField
             className="textInput"
             type="text"
@@ -585,9 +565,7 @@ class OldComponent extends Component {
             }
           />
         </div>
-        <div
-          className="formItem"
-        >
+        <div className="formItem">
           <TextField
             className="textInput"
             multiline
@@ -600,13 +578,8 @@ class OldComponent extends Component {
             placeholder="Enter text here"
           />
         </div>
-        <div
-          className="formItem"
-        >
-          <button
-            className="button"
-            onClick={this.handleSubmit}
-          >
+        <div className="formItem">
+          <button className="button" onClick={this.handleSubmit}>
             Submit
           </button>
           <div className="buttonGroup">
