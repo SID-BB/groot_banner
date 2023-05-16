@@ -62,7 +62,7 @@ class StaticBanner extends Component {
             data:[],
             searchText:"",
 			isLoading: true,
-            fieldName:"",
+            fieldName:"bannerType",
             fieldValue:"",
             searchBarRef : React.createRef()
         }
@@ -136,9 +136,6 @@ class StaticBanner extends Component {
     handleFilterApi=(columnName,columnValue)=>{
         let k=columnName;
         const v=columnValue;
-        console.log(k);
-        var filters=[{}];
-        console.log(filters);
         const url = 'https://qas16.bigbasket.com/content-svc/static-banner/filter?filters=[{"' + k + '": "' + v + '" }]';
         console.log(url);
         fetch(url,{
@@ -151,7 +148,7 @@ class StaticBanner extends Component {
         .then(response=>{
             
             for(var i = 0; i < response.length; i++) {
-
+                response[i]['bannerType']=<a href={grootHost +'/bannerdetails/'+response[i]['id']}>{response[i]['bannerType']}</a>
                 delete response[i]['id'];
                 delete response[i]['contentType'];
                 delete response[i]['createdById'];
@@ -173,6 +170,8 @@ class StaticBanner extends Component {
                         response[i][key]='';
                     }
                   }
+                  response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
+                  response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
             }
             this.setState({data:response,isLoading:false})      
 
@@ -215,6 +214,8 @@ class StaticBanner extends Component {
                         response[i][key]='';
                     }
                   }
+                  response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
+                  response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
             }
             this.setState({data:response,isLoading:false})
         }).catch(error=>console.log(error))
@@ -233,8 +234,6 @@ class StaticBanner extends Component {
         this.setState({fieldValue:e.target.value},()=>{
             this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
         });
-        
-        // this.handleFilterApi(this.fieldName,this.fieldValue);
     }
 
     // handleFilter = (column, value) => {
@@ -247,43 +246,6 @@ class StaticBanner extends Component {
         console.log(data);
         return (
             <div className={classes.root}>
-                {/* <input
-    type='text'
-    id='searchbar'
-    className='searchbar'
-    placeholder='Search Bar'
-    ref={this.searchBarRef}
-    onKeyDown={this.handleKeyEnter}
-    onChange={(e) => {
-    //   setSearchMovie(e.target.value);
-    //   this.handleFilterSearch(e.target.value,'bannerType')
-      this.setState({searchText:e.target.value});
-
-      
-        
-    }}
-
-  />
-  <button 
-  className='search-button'
-  onClick={(e) => {
-    //  setSearchMovie(searchFieldValue);
-    console.log(e.target.value);
-    // this.handleFilterApi("deviceType",this.state.searchText);
-    this.handleSearchApi(this.state.searchText);
-    //  this.handleFilterSearch(e.target.value,'bannerType');
-    //  this.handleFilterApi("deviceType","e.target.value");
-  }}
->
-  Search
-</button>
-<button
-  onClick={(e)=>{
-    this.componentDidMount();
-}}
->
-    refresh
-</button> */}
 {/* <button 
   className='filter-button'
   onClick={(e) => {
@@ -315,150 +277,67 @@ class StaticBanner extends Component {
 >
   Filter
 </button> */}
-<label>
-          Dropdown:
+
           <select value={this.state.fieldName} onChange={this.handleDropdownChange}>
-            <option value="web">web</option>
+            <option value="bannerType">Banner Type</option>
             <option value="deviceType">Device Type</option>
             <option value="displayName">Display Name</option>
+            <option value="ecGroupNames">EC Group Names</option>
+            <option value="isActive">Is Active</option>
+            <option value="status">Status</option>
+            <option value="createdBy">Created By</option>
+            <option value="createdDate">Created Date</option>
+            <option value="reviewComment">Review Comment</option>
+            <option value="reviewedBy">Reviewed By</option>
+            <option value="updatedDate">Updated Date</option>
           </select>
-        </label>
         <br />
-        <label>
-          Text Input:
-          <input type="text" value={this.state.fieldValue} onChange={this.handleTextChange} />
-        </label>
-        <br />
+          <input type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
+          <button 
+  className='search-button'
+  onClick={(e) => {
+    //  setSearchMovie(searchFieldValue);
+    console.log(e.target.value);
+    // this.handleFilterApi("deviceType",this.state.searchText);
+    this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
+    //  this.handleFilterSearch(e.target.value,'bannerType');
+    //  this.handleFilterApi("deviceType","e.target.value");
+  }}
+>
+  Search
+</button>
+        <button
+  onClick={(e)=>{
+    this.state.fieldValue="";
+    this.componentDidMount();
+}}
+>
+    refresh
+</button> 
 <MaterialTable
       title="List of banners"
       columns={[
-        { title: 'Banner Type', field: 'bannerType',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            // console.log(this.state.filterValue);
-            this.debouncedHandleFilterApi('bannerType', term);
-
-          }},
-        { title: 'Created By', field: 'createdBy',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            // onKeyDown={this.debouncedHandleFilterApi('createdBy', term)}
-            // console.log(this.state.filterValue);
-            this.debouncedHandleFilterApi('createdBy', term);
-          } },
-        { title: 'Created Date', field: 'createdDate', type: 'numeric',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            // console.log(this.state.filterValue);
-            this.debouncedHandleFilterApi('createdDate', term);
-
-          } },
+        { title: 'Banner Type', field: 'bannerType'},
           {
             title: 'Device Type',
-            field: 'deviceType',
-            customFilterAndSearch: (term, rowData,event) => {
-              console.log('the value of the event is {}',event);
-            //   event.preventDefault();
-              console.log(term);
-              console.log('inside the device type');
-              console.log(rowData);
-              // this.setState({ filterValue: this.state.filterValue+term});
-              console.log('the filter value');
-              // console.log(this.state.filterValue);
-            //   const temp=term;
-              this.debouncedHandleFilterApi('deviceType', term);
-              console.log('after the api call ');
-              console.log(term);
-            //   term=temp;
-            }
+            field: 'deviceType'
           },
-        { title: 'Display Name', field: 'displayName',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term });
-            console.log('the filter value');
-            this.debouncedHandleFilterApi('displayName', term);
-
-          }},
-        { title: 'Ec Group Names', field: 'ecGroupNames',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            // console.log(this.state.filterValue);
-            // this.handleFilterApi('deviceType', filterTerm);
-            this.debouncedHandleFilterApi('ecGroupNames', term);
-
-          } },
-        { title: 'is Active', field: 'isActive', type: 'numeric',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            this.debouncedHandleFilterApi('isActive', term);
-          } },
-        { title: 'Review Comment', field: 'reviewComment',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            this.debouncedHandleFilterApi('reviewComment', term);
-          } },
-        { title: 'Reviewed By', field: 'reviewedBy',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            // console.log(this.state.filterValue);
-            this.debouncedHandleFilterApi('reviewedBy', term);
-          }},
-        { title: 'Status', field: 'status',tabValue:'term',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            // this.setState({ filterValue: this.state.filterValue+term});
-            console.log('the filter value');
-            // console.log(this.state.filterValue);
-            this.debouncedHandleFilterApi('status', term);
-          } },
-        { title: 'Updated Date', field: 'updatedDate', type:'numeric',customFilterAndSearch: (term, rowData) => {
-            console.log(term);
-            console.log('inside the device type');
-            console.log(rowData);
-            console.log('the filter value');
-
-            this.debouncedHandleFilterApi('updatedDate', term);
-          }},
+          { title: 'Display Name', field: 'displayName'},
+          { title: 'Ec Group Names', field: 'ecGroupNames'},
+          { title: 'is Active', field: 'isActive', type: 'numeric'},
+          { title: 'Status', field: 'status',tabValue:'term'},
+        { title: 'Created By', field: 'createdBy'},
+        { title: 'Created Date', field: 'createdDate', type: 'numeric'},
+        { title: 'Review Comment', field: 'reviewComment'},
+        { title: 'Reviewed By', field: 'reviewedBy'},
+        { title: 'Updated Date', field: 'updatedDate', type:'numeric'},
       ]}
       data={this.state.data}        
       options={{
-        filtering: true,
+        filtering: false,
         search:false,
-      }}
-    //   icons={{Search:(search)=>this.handleSearchApi(search)}}
-    //   actions={[(searchValue) => console.log('the value of the seartch box {}',searchValue)]}
-    //   Component={{EditField:search=(searchValue)=>{console.log(searchValue)}}}
-
-    //   customFilterAndSearch={(term)=>{
-    //     console.log('inside the search bar');
-    //     console.log(term);
-
-    //   }}
-    
+        pageSize:10,
+      }}    
 	  isLoading={this.state.isLoading}
     />
             </div>

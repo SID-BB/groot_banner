@@ -11,7 +11,7 @@ import Table from './TableGrid';
 import MaterialTable from 'material-table';
 import { apitimeout } from './api_timeout';
 import { Link } from '@material-ui/core';
-
+import '../assets/styles/bannerdetails.css'
 
 
 function TabContainer(props) {
@@ -80,7 +80,7 @@ class BannerDetails extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "_x4dzSTlxTAg_CX34OK5ZJ8Fym4VJaCt"
+                "authorization": "7PnYSg1KgYQXVUEShRNtDicvJVZePwOS"
             }
         }).then(response=>response.json())
         .then(response=>{
@@ -101,12 +101,11 @@ class BannerDetails extends Component {
         console.log(this.state.responseObject);
         return (
             <div className={classes.root}>
-<h1>BannerDetails</h1>
-        <p>Image :</p>
-        <img src={this.state.responseObject['s3Path']}></img>
+        <p>Banner :</p>
+        <img className="imageWidth" src={this.state.responseObject['s3Path']}></img>
        
         <MaterialTable
-      title="List of banners"
+      title="Banner Details"
       columns={[
         { title: 'Banner Details', field: 'field'},
         { title: 'Value', field: 'value' },
@@ -130,6 +129,7 @@ class BannerDetails extends Component {
       options={{
         filtering: false,
         search:false,
+        pageSize:10,
       }}    
 	  
     />
