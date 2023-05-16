@@ -1,13 +1,17 @@
 import React, { Component, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import ErrorBoundary from "../components/ErrorBoundary";
+import Async from 'react-async';
 const ChooseTemplate = React.lazy(() => import(/* webpackChunkName: "ChooseTemplate" */"../components/ChooseTemplate"));
 const ManageAplusTemplate = React.lazy(() => import(/* webpackChunkName: "ManageAplusTemplate" */"../components/ManageAplusTemplate"));
 const TemplateView = React.lazy(() => import(/* webpackChunkName: "TemplateView" */"./TemplateView"));
+const FormView = React.lazy(()=> import(/* webpackChunkName: "ManageAplusTemplate" */"../components/Form"));
 import Navbar from "../components/Navbar";
 import Loader from '../components/Loading';
 import StaticBanner from "../components/StaticBanner";
 import BannerDetails from "../components/BannerDetails";
+
+
 
 class App extends Component {
     constructor(props) {
@@ -43,6 +47,8 @@ class App extends Component {
                     <Suspense fallback={Loader}>
                         <Switch>
                         
+                            <Route exact path={grootHost + "/form"} render={()=> <FormView/>} />
+                            <Route exact path={grootHost + "/dark"} render={()=> <Darktheme/>} />
                             <Route exact path={grootHost + "/"} render={() => <ManageAplusTemplate />} />
 
                             <Route exact path={grootHost + "/all"} render={() => <ManageAplusTemplate />} />
