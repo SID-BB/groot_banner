@@ -8,6 +8,8 @@ const TemplateView = React.lazy(() => import(/* webpackChunkName: "TemplateView"
 const FormView = React.lazy(()=> import(/* webpackChunkName: "ManageAplusTemplate" */"../components/Form"));
 import Navbar from "../components/Navbar";
 import Loader from '../components/Loading';
+import StaticBanner from "../components/StaticBanner";
+import BannerDetails from "../components/BannerDetails";
 
 
 
@@ -44,11 +46,16 @@ class App extends Component {
                     <Navbar togglePerm={this.props.togglePerm} />
                     <Suspense fallback={Loader}>
                         <Switch>
+                        
                             <Route exact path={grootHost + "/form"} render={()=> <FormView/>} />
                             <Route exact path={grootHost + "/dark"} render={()=> <Darktheme/>} />
                             <Route exact path={grootHost + "/"} render={() => <ManageAplusTemplate />} />
 
                             <Route exact path={grootHost + "/all"} render={() => <ManageAplusTemplate />} />
+
+                            <Route exact path={grootHost + "/staticbanners"} render={() => <StaticBanner />} />
+                            
+                            <Route exact path={grootHost + "/bannerdetails/:id"} render={() => <BannerDetails />} />
 
                             <Route exact path={grootHost + "/choosetemp"} render={(props) => <ChooseTemplate {...props} handleTemplateComponent={this.handleTemplateComponent} />} />
 
@@ -62,3 +69,12 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
