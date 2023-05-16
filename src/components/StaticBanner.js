@@ -11,6 +11,10 @@ import Table from './TableGrid';
 import MaterialTable from 'material-table';
 import { apitimeout } from './api_timeout';
 import { Link } from '@material-ui/core';
+import Button from "@material-ui/core";
+import AddCircle from '@material-ui/icons/AddCircle';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 
 function TabContainer(props) {
@@ -131,7 +135,12 @@ class StaticBanner extends Component {
 
         }).catch(error=>console.log(error))
     }
-
+    handleButtonClick = (e) => {
+        var url = window.location.href;
+        var host = url.split("apluscontent/");
+        var form_url = host[0] + "apluscontent/form";
+        window.location.href = form_url;
+      }
 
     handleFilterApi=(columnName,columnValue)=>{
         let k=columnName;
@@ -277,6 +286,10 @@ class StaticBanner extends Component {
 >
   Filter
 </button> */}
+<IconButton aria-label="Add" onClick={this.handleButtonClick} style={{cursor:"pointer"}}>
+      <AddIcon />
+      <label style={{cursor:"pointer"}}>Create new</label>
+  </IconButton>
 
           <select value={this.state.fieldName} onChange={this.handleDropdownChange}>
             <option value="bannerType">Banner Type</option>
