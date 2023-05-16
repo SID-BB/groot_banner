@@ -1,0 +1,98 @@
+.root {
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-family: Roboto, sans-serif;
+    padding: 24px;
+    width: 60%;
+    margin: auto;
+    border-radius: 8px;
+  }
+  
+  .heading {
+    color: #202124;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 46px;
+    margin-bottom: 16px;
+    margin-left: 490px;
+    padding: auto;
+  }
+  
+  .label {
+    color: #202124;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .select {
+    border: none;
+    border-bottom: 1px solid #dadce0;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .fileInput {
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .checkboxLabel {
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .button {
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+    cursor: pointer;
+    background-color: blue;
+    color: white;
+    outline: none;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .draftButton,
+  .reviewButton {
+    border: none;
+    padding: 4px;
+    font-size: 16px;
+    width: calc(50% - 8px);
+    margin-bottom: 16px;
+    cursor: pointer;
+    color: white;
+    outline: none;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .draftButton {
+    background-color: gray;
+  }
+  
+  .reviewButton {
+    background-color: green;
+  }
+  
+  .errorMessage {
+    color: red;
+  }
+  
+  .textinput {
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+  }

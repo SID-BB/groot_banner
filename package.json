@@ -41,7 +41,7 @@
     "html-webpack-plugin": "3.2.0",
     "jquery": "1.11.0",
     "material-table": "1.36.0",
-    "nodemon": "1.19.1",
+    "nodemon": "^1.19.1",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "react-froala-wysiwyg": "2.9.4-1",
     "react-hot-loader": "4.12.5",
@@ -58,9 +58,11 @@
     "webpack-hot-middleware": "2.25.0"
   },
   "dependencies": {
-    "@material-ui/core": "3.9.3",
+    "@material-ui/core": "^3.9.4",
+    "net": "^1.0.2",
     "prop-types": "15.7.2",
     "react": "16.8.4",
+    "react-async": "^10.0.1",
     "react-dom": "16.8.4",
     "react-jss": "8.6.1",
     "react-redux": "7.1.1",

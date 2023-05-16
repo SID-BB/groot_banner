@@ -16,6 +16,8 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { json } from "body-parser";
+import Axios from "axios";
+import '../assets/styles/form.css'
 
 const styles = (theme) => ({
   root: {
@@ -172,6 +174,29 @@ const menuItems = bannerTypes.map((bannerType) => {
   );
 });
 
+const handleget = () => {
+  Axios.get(
+    `http://hqasvc-alb.bigbasket.com/config_svc/internal/v1/ec-group-type/?ec-group-type-slug=cart-v2`,
+    {
+      headers: {
+        "X-Caller": "local",
+        "X-Timestamp": "2021-09-01 10:10:00",
+        "X-Tracker": "06973e47-df9d-42ce-80d9-8428020866ef",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      // Save the response to state
+      this.setState({ responseData: response });
+      console.log("This is running");
+    })
+    .catch((error) => {
+      // Save the error to state
+      this.setState({ error: error.message });
+    });
+};
+
 class OldComponent extends Component {
   constructor(props) {
     super(props);
@@ -187,6 +212,7 @@ class OldComponent extends Component {
       multiline1Value: "",
       multiline2Value: "",
       imageFile: null,
+      responseData: null,
       imageSize: "",
       ecNames: "",
       errorMessage: "",
@@ -202,6 +228,31 @@ class OldComponent extends Component {
     this.handleMultiline2Change = this.handleMultiline2Change.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEcNames = this.handleEcNames.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(
+      "http://hqasvc-alb.bigbasket.com/config_svc/internal/v1/ec-group-type/?ec-group-type-slug=cart-v2",
+      {
+        method: "GET",
+        headers: {
+          "X-Caller": "local",
+          "X-Timestamp": "2021-09-01 10:10:00",
+          "X-Tracker": "06973e47-df9d-42ce-80d9-8428020866ef",
+        },
+        
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // Save the response to state
+        this.setState({ responseData: data });
+        console.log("This is running");
+      })
+      .catch((error) => {
+        // Save the error to state
+        this.setState({ error: error.message });
+      });
   }
 
   handleImageChange(event) {
@@ -316,7 +367,7 @@ class OldComponent extends Component {
           method: "POST",
           headers: {
             "x-project": "mm-canary",
-            authorization: "sP2OAeTfbY3ZKPz7zznD7e9u23UAtr8m",
+            authorization: "czDnSlbBsG5do8oNAxzzIBGd6w8VMOJN",
           },
           body: excelData, // Set the request body to the FormData object
         }
@@ -371,82 +422,48 @@ class OldComponent extends Component {
     const { loading } = this.state;
     return (
       <div
-        style={{
-          backgroundColor: "#fff",
-          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-          fontFamily: "Roboto, sans-serif",
-          padding: "24px",
-          width: "60%",
-          margin: "auto",
-          borderRadius: "8px",
-        }}
+        
+      className="root"
       >
         <h1
-          style={{
-            color: "#202124",
-            fontSize: "24px",
-            fontWeight: "bold",
-            marginTop: "46px",
-            marginBottom: "16px",
-            marginLeft: "490px",
-            padding: "auto",
-          }}
+          className="heading"
         >
           Image Upload
         </h1>
-        <div style={{ marginBottom: "16px" }}>
+        <div className="formItem">
           <label
-            style={{
-              color: "#202124",
-              fontSize: "14px",
-              fontWeight: "bold",
-              marginBottom: "8px",
-              display: "block",
-            }}
+            className="label"
           >
             Select Group Names:
           </label>
           <Select
-            style={{
-              border: "none",
-              borderBottom: "1px solid #dadce0",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-            }}
+            className="select"
             value={this.state.ecNames}
             onChange={this.handleEcNames}
             required={true}
             error={this.state.ecNames === ""}
           >
-            <MenuItem value="bb-b2c">bb-b2c</MenuItem>
-            <MenuItem value="bb-b2b">bb-b2b</MenuItem>
-            <MenuItem value="bb-now">bb-now</MenuItem>
+            {/* {this.state.reponseData &&
+              this.state.responseData.ec_groups.map((group) => (
+                <MenuItem key={group.id} value={group.slug}>
+                  {group.name}
+                </MenuItem>
+              ))} */}
+              <MenuItem value={"mandi"}>mandi</MenuItem>
+              <MenuItem value={"bbnow"}>bbnow</MenuItem>
+              <MenuItem value={"meat-express"}>meat-express</MenuItem>
+              <MenuItem value={"pb-fmcg"}>pb-fmcg</MenuItem>
           </Select>
         </div>
 
-        <div style={{ marginBottom: "16px" }}>
+        <div className="formItem">
           <label
-            style={{
-              color: "#202124",
-              fontSize: "14px",
-              fontWeight: "bold",
-              marginBottom: "8px",
-              display: "block",
-            }}
+            className="label"
           >
             Select size:
           </label>
           <Select
-            style={{
-              border: "none",
-              borderBottom: "1px solid #dadce0",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-            }}
+            className="select"
             value={this.state.imageSize}
             onChange={this.handleSizeChange}
             required={true}
@@ -457,22 +474,11 @@ class OldComponent extends Component {
         </div>
 
         <div
-          style={{
-            color: "#202124",
-            fontSize: "14px",
-            fontWeight: "bold",
-            marginBottom: "8px",
-            display: "block",
-          }}
+          className="formItem"
         >
+          <label className="label">Upload Image:</label>
           <TextField
-            style={{
-              border: "none",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-            }}
+            className="fileInput"
             type="file"
             label="Upload Image:"
             onChange={this.handleImageChange}
@@ -483,33 +489,21 @@ class OldComponent extends Component {
           />
         </div>
 
-        <div>
+        <div className="formItem">
           <FormControl
-            style={{
-              color: "#202124",
-              fontSize: "14px",
-              fontWeight: "bold",
-              marginBottom: "3px",
-              display: "block",
-            }}
+            className="checkboxLabel"
             component="fieldset"
             required
             error={!this.state.selectedRadio}
           >
             <FormLabel
               component="legend"
-              style={{ ...labelStyle, marginBottom: "8px" }}
+              className="label"
             >
               Device Types:
             </FormLabel>
             <RadioGroup
-              style={{
-                border: "none",
-                padding: "8px",
-                fontSize: "16px",
-                width: "100%",
-                marginBottom: "5px",
-              }}
+              className="select"
               row
               value={this.state.selectedRadio}
               onChange={this.handleRadioChange}
@@ -551,22 +545,10 @@ class OldComponent extends Component {
           </FormControl>
         </div>
         <div
-          style={{
-            color: "#202124",
-            fontSize: "14px",
-            fontWeight: "bold",
-            marginBottom: "8px",
-            display: "block",
-          }}
+          className="formItem"
         >
           <FormControlLabel
-            style={{
-              border: "none",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-            }}
+            className="checkboxLabel"
             control={
               <Checkbox
                 checked={this.state.checkboxChecked}
@@ -585,22 +567,10 @@ class OldComponent extends Component {
           />
         </div>
         <div
-          style={{
-            color: "#202124",
-            fontSize: "14px",
-            fontWeight: "bold",
-            marginBottom: "8px",
-            display: "block",
-          }}
+          className="formItem"
         >
           <TextField
-            style={{
-              border: "none",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-            }}
+            className="textInput"
             type="text"
             label="Display Name:"
             value={this.state.inputValue}
@@ -616,22 +586,10 @@ class OldComponent extends Component {
           />
         </div>
         <div
-          style={{
-            color: "#202124",
-            fontSize: "14px",
-            fontWeight: "bold",
-            marginBottom: "8px",
-            display: "block",
-          }}
+          className="formItem"
         >
           <TextField
-            style={{
-              border: "none",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-            }}
+            className="textInput"
             multiline
             rows={4}
             label="Description:"
@@ -643,98 +601,37 @@ class OldComponent extends Component {
           />
         </div>
         <div
-          style={{
-            color: "#141414",
-            fontSize: "14px",
-            fontWeight: "bold",
-            marginBottom: "8px",
-            display: "block",
-          }}
+          className="formItem"
         >
           <button
-            style={{
-              border: "none",
-              padding: "8px",
-              fontSize: "16px",
-              width: "100%",
-              marginBottom: "16px",
-              cursor: "pointer",
-              backgroundColor: "blue",
-              color: "white",
-              outline: "none",
-              transition: "background-color 0.2s ease-in-out",
-            }}
+            className="button"
             onClick={this.handleSubmit}
           >
             Submit
           </button>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="buttonGroup">
             <button
-              style={{
-                border: "none",
-                padding: "4px",
-                fontSize: "16px",
-                width: "calc(50% - 8px)",
-                marginBottom: "16px",
-                cursor: "pointer",
-                backgroundColor: "gray",
-                color: "white",
-                outline: "none",
-                transition: "background-color 0.2s ease-in-out",
-              }}
+              className="button"
               // onClick={this.handleDraft}
             >
               Draft
             </button>
             <button
-              style={{
-                border: "none",
-                padding: "4px",
-                fontSize: "16px",
-                width: "calc(50% - 8px)",
-                marginBottom: "16px",
-                cursor: "pointer",
-                backgroundColor: "green",
-                color: "white",
-                outline: "none",
-                transition: "background-color 0.2s ease-in-out",
-              }}
+              className="button"
               // onClick={this.handleReview}
             >
               Review
             </button>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="buttonGroup">
             <button
-              style={{
-                border: "none",
-                padding: "4px",
-                fontSize: "16px",
-                width: "calc(50% - 8px)",
-                marginBottom: "16px",
-                cursor: "pointer",
-                backgroundColor: "gray",
-                color: "white",
-                outline: "none",
-                transition: "background-color 0.2s ease-in-out",
-              }}
+              className="button"
               // onClick={this.handleDraft}
             >
               Accept
             </button>
             <button
-              style={{
-                border: "none",
-                padding: "4px",
-                fontSize: "16px",
-                width: "calc(50% - 8px)",
-                marginBottom: "16px",
-                cursor: "pointer",
-                backgroundColor: "green",
-                color: "white",
-                outline: "none",
-                transition: "background-color 0.2s ease-in-out",
-              }}
+              className="button"
               // onClick={this.handleReview}
             >
               Reject
@@ -742,7 +639,7 @@ class OldComponent extends Component {
           </div>
         </div>
         {this.state.errorMessage && (
-          <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+          <p className="errorMessage">{this.state.errorMessage}</p>
         )}
       </div>
     );
