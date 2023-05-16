@@ -95,7 +95,7 @@ class ManageAplusTemplate extends Component {
                         </Tabs>
                     </Grid>
                 </Grid>
-                {this.state.tabValue === 0 && <TabContainer>
+                {<TabContainer>
                     <div className={classes.tableStyle} >
                         <Table tabValue={this.state.tabValue} />
                     </div>

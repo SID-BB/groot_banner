@@ -6,6 +6,8 @@ const ManageAplusTemplate = React.lazy(() => import(/* webpackChunkName: "Manage
 const TemplateView = React.lazy(() => import(/* webpackChunkName: "TemplateView" */"./TemplateView"));
 import Navbar from "../components/Navbar";
 import Loader from '../components/Loading';
+import StaticBanner from "../components/StaticBanner";
+import BannerDetails from "../components/BannerDetails";
 
 class App extends Component {
     constructor(props) {
@@ -40,9 +42,14 @@ class App extends Component {
                     <Navbar togglePerm={this.props.togglePerm} />
                     <Suspense fallback={Loader}>
                         <Switch>
+                        
                             <Route exact path={grootHost + "/"} render={() => <ManageAplusTemplate />} />
 
                             <Route exact path={grootHost + "/all"} render={() => <ManageAplusTemplate />} />
+
+                            <Route exact path={grootHost + "/staticbanners"} render={() => <StaticBanner />} />
+                            
+                            <Route exact path={grootHost + "/bannerdetails/:id"} render={() => <BannerDetails />} />
 
                             <Route exact path={grootHost + "/choosetemp"} render={(props) => <ChooseTemplate {...props} handleTemplateComponent={this.handleTemplateComponent} />} />
 
@@ -56,3 +63,12 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+

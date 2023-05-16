@@ -60,6 +60,8 @@ const themeDialogMobile = createMuiTheme({
     }
 });
 
+const mock = {"page":1,"per_page":20,"total":6,"total_pages":1,"data":[{"id":10160,"templateName":"test-14-02-2023","createdBy":"Pooja.Maxi","createdById":519887,"createdOn":"14/02/2023 13:04:51","updatedOn":"14/02/2023 13:04:51","approvedBy":null,"location":"/media/uploads/groot/preview/html/519887-pooja-maxi-test-14-02-2023.html","manufacturer":"Maxi Store","status":{"id":1,"name":"cms_contentDrafted","displayName":"Draft","description":"Template is in draft mode"}},{"id":10176,"templateName":"t2-18-02-2023","createdBy":"Pooja.Maxi","createdById":519887,"createdOn":"18/02/2023 11:29:36","updatedOn":"18/02/2023 11:29:36","approvedBy":null,"location":"/media/uploads/groot/preview/html/519887-pooja-maxi-t2-18-02-2023.html","manufacturer":"Maxi Store","status":{"id":1,"name":"cms_contentDrafted","displayName":"Draft","description":"Template is in draft mode"}},{"id":10262,"templateName":"candy-soft-09-03-2023","createdBy":"Pooja.Maxi","createdById":519887,"createdOn":"09/03/2023 09:14:24","updatedOn":"09/03/2023 09:21:20","approvedBy":null,"location":"/media/uploads/groot/preview/html/519887-pooja-maxi-candy-soft-09-03-2023.html","manufacturer":"Maxi Store","status":{"id":1,"name":"cms_contentDrafted","displayName":"Draft","description":"Template is in draft mode"}},{"id":10360,"templateName":"tom-tom-22-03-2023","createdBy":"Pooja.Maxi","createdById":519887,"createdOn":"22/03/2023 12:53:02","updatedOn":"22/03/2023 12:53:02","approvedBy":null,"location":"/media/uploads/groot/preview/html/519887-pooja-maxi-tom-tom-22-03-2023.html","manufacturer":"Maxi Store","status":{"id":1,"name":"cms_contentDrafted","displayName":"Draft","description":"Template is in draft mode"}},{"id":10382,"templateName":"bingo-25-03-2023","createdBy":"Pooja.Maxi","createdById":519887,"createdOn":"25/03/2023 08:35:54","updatedOn":"25/03/2023 08:35:54","approvedBy":null,"location":"/media/uploads/groot/preview/html/519887-pooja-maxi-bingo-25-03-2023.html","manufacturer":"Maxi Store","status":{"id":1,"name":"cms_contentDrafted","displayName":"Draft","description":"Template is in draft mode"}},{"id":10460,"templateName":"pp-28-03-2023","createdBy":"Pooja.Maxi","createdById":519887,"createdOn":"28/03/2023 09:17:47","updatedOn":"28/03/2023 09:17:47","approvedBy":null,"location":"/media/uploads/groot/preview/html/519887-pooja-maxi-pp-28-03-2023.html","manufacturer":"Maxi Store","status":{"id":1,"name":"cms_contentDrafted","displayName":"Draft","description":"Template is in draft mode"}}],"draft_Index":20}
+
 class TableGrid extends Component {
     constructor(props) {
         super(props);
@@ -109,6 +111,8 @@ class TableGrid extends Component {
             table_url = host + templateAPI + "/all";
         else
             table_url = host + templateAPI + "/";
+
+            console.log(host, table_url, "---------------------------")
 
         this.setState({ tableDataUrl: table_url });
     };
@@ -408,7 +412,7 @@ class TableGrid extends Component {
 
         return (
             <React.Fragment>
-                {this.state.loading && <Loader />}
+                {/* {this.state.loading && <Loader />} */}
                 <MuiThemeProvider theme={theme}>
                     <MaterialTable
                         title={<span className={classes.tableHeader}>Manage A+ Content</span>}
