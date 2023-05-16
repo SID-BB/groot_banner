@@ -336,7 +336,7 @@ class StaticBanner extends Component {
       options={{
         filtering: false,
         search:false,
-        pageSize:10,
+        pageSize: 10
       }}    
 	  isLoading={this.state.isLoading}
     />
