@@ -1,0 +1,25 @@
+.iconButton{
+    float: right;
+    margin-top: 1%;
+}
+.materialTable{
+    padding-top: 3%;
+}
+.selectBox{
+    margin-top: 2%;
+    margin-left: 25%;
+    /* display: inline-flex; */
+}
+.searchBox{
+    margin-top: 2%;
+    margin-left: 0%;
+}
+.submitButton{
+    margin-top: 2%;
+}
+.refreshButton{
+    margin-top: 2%;
+}
+/* .completeSearch{
+    margin-top: 6%;
+} */
