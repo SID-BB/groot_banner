@@ -81,7 +81,8 @@ class StaticBanner extends Component {
         };
       }
     debouncedHandleFilterApi = this.debounce((field, filterTerm) => {
-        this.handleFilterApi(field, filterTerm);
+        
+        this.handleFilterApi(field, filterTerm.toLowerCase());
       }, 300);
 
     componentDidMount = () => {
