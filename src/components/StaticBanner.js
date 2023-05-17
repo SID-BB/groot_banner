@@ -15,7 +15,7 @@ import Button from "@material-ui/core";
 import AddCircle from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-
+import '../assets/styles/staticbanner.css';
 
 function TabContainer(props) {
     return (
@@ -91,7 +91,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "7PnYSg1KgYQXVUEShRNtDicvJVZePwOS"
+                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -151,7 +151,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "7PnYSg1KgYQXVUEShRNtDicvJVZePwOS"
+                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -195,7 +195,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "7PnYSg1KgYQXVUEShRNtDicvJVZePwOS"
+                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -286,12 +286,14 @@ class StaticBanner extends Component {
 >
   Filter
 </button> */}
-<IconButton aria-label="Add" onClick={this.handleButtonClick} style={{cursor:"pointer"}}>
+<div className='iconButton'>
+<IconButton  aria-label="Add" onClick={this.handleButtonClick} style={{cursor:"pointer"}}>
       <AddIcon />
       <label style={{cursor:"pointer"}}>Create new</label>
   </IconButton>
-
-          <select value={this.state.fieldName} onChange={this.handleDropdownChange}>
+</div >
+        
+        <select className='selectBox' value={this.state.fieldName} onChange={this.handleDropdownChange}>
             <option value="bannerType">Banner Type</option>
             <option value="deviceType">Device Type</option>
             <option value="displayName">Display Name</option>
@@ -304,10 +306,11 @@ class StaticBanner extends Component {
             <option value="reviewedBy">Reviewed By</option>
             <option value="updatedDate">Updated Date</option>
           </select>
-        <br />
-          <input type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
+        
+          
+          <input  className='searchBox' type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
           <button 
-  className='search-button'
+  className='submitButton'
   onClick={(e) => {
     //  setSearchMovie(searchFieldValue);
     console.log(e.target.value);
@@ -320,6 +323,7 @@ class StaticBanner extends Component {
   Search
 </button>
         <button
+        className='refreshButton'
   onClick={(e)=>{
     this.state.fieldValue="";
     this.componentDidMount();
@@ -327,6 +331,7 @@ class StaticBanner extends Component {
 >
     refresh
 </button> 
+<div className='materialTable'>
 <MaterialTable
       title="List of banners"
       columns={[
@@ -353,6 +358,8 @@ class StaticBanner extends Component {
       }}    
 	  isLoading={this.state.isLoading}
     />
+</div>
+
             </div>
         );
     }
