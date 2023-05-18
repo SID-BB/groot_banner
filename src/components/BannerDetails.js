@@ -12,7 +12,7 @@ import MaterialTable from "material-table";
 import { apitimeout } from "./api_timeout";
 import { Link } from "@material-ui/core";
 import "../assets/styles/bannerdetails.css";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 function TabContainer(props) {
   return (
@@ -65,20 +65,97 @@ class BannerDetails extends Component {
       isLoading: true,
       searchBarRef: React.createRef(),
       responseObject: [],
+      bannerId: 0,
+      isDraft: false,
+      isReviewPending: false,
     };
   }
 
   componentDidMount = () => {
     const { id } = this.props.match.params;
+    this.setState({ bannerId: id });
+    console.log(this.state.bannerId);
+    console.log(id);
     this.handleBannerDetails(id);
   };
-
-  handleUpdateClick = () => {
+  handleDraft = () => {
     const { id } = this.props.match.params;
-    var url = window.location.href;
-      var host = url.split("apluscontent/");
-      var table_url = host[0] + "apluscontent/form/"+id;
-      window.location.href = table_url;
+    let url =
+      "https://qas16.bigbasket.com/content-svc/static-banner/send-for-review/" +
+      id;
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+        "x-tracker": "manish-testing",
+        "x-project": "mm-canary",
+        Accept: "application/json",
+      },
+    });
+    console.log("inside the draft");
+  };
+  handleReject = () => {
+    const { id } = this.props.match.params;
+    let url =
+      "https://qas16.bigbasket.com/content-svc/static-banner/reject/" + id;
+    var formdata = new FormData();
+    formdata.append("reviewComment", '"banner quality is not up to the mark"');
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        DNT: "1",
+        Pragma: "no-cache",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+        "sec-ch-ua":
+          '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Linux"',
+        "x-project": "mm-canary",
+        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+      },
+      body: formdata,
+    });
+  };
+  handleApprove = () => {
+    const { id } = this.props.match.params;
+    let url =
+      "https://qas16.bigbasket.com/content-svc/static-banner/approve/" + id;
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        DNT: "1",
+        Pragma: "no-cache",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+        "sec-ch-ua":
+          '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Linux"',
+        "x-project": "mm-canary",
+        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+      },
+    });
   };
 
   handleBannerDetails = (id) => {
@@ -94,7 +171,12 @@ class BannerDetails extends Component {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-
+        if (response["status"] == "DRAFT") {
+          this.setState({ isDraft: true });
+        }
+        if (response["status"] == "REVIEW PENDING") {
+          this.setState({ isReviewPending: true });
+        }
         this.setState({ responseObject: response });
       });
 
@@ -187,13 +269,47 @@ class BannerDetails extends Component {
             pageSize: 10,
           }}
         />
-        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <Button
-            variant="contained"
-            onClick={this.handleUpdateClick}
-            >
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button variant="contained" onClick={this.handleUpdateClick}>
             Update
-            </Button></div>
+          </Button>
+        </div>
+        {this.state.isDraft && (
+          <Button variant="contained" onClick={this.handleDraft}>
+            Send for Review
+          </Button>
+        )}
+        {/* <Button
+    variant='contained'
+    onClick={this.handleDraft()}
+    >
+        Send for Review
+    </Button> */}
+        {this.state.isReviewPending && (
+          <div>
+            <Button variant="contained" onClick={this.handleReject}>
+              Reject
+            </Button>
+            <Button variant="contained" onClick={this.handleApprove}>
+              Approve
+            </Button>
+
+            <br></br>
+          </div>
+        )}
+
+        {/* <Button
+    variant='contained'
+    onClick={this.handleReject()}
+    >
+        Reject
+    </Button>
+    <Button
+    variant='contained'
+    onClick={this.handleApprove()}
+    >
+        Approve
+    </Button> */}
       </div>
     );
   }
