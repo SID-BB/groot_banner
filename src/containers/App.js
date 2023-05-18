@@ -47,7 +47,7 @@ class App extends Component {
                     <Suspense fallback={Loader}>
                         <Switch>
                         
-                            <Route exact path={grootHost + "/form/:id?"} render={()=> <FormView/>} />
+                            <Route exact path={grootHost + "/form"} render={()=> <FormView/>} />
                             <Route exact path={grootHost + "/dark"} render={()=> <Darktheme/>} />
                             <Route exact path={grootHost + "/"} render={() => <ManageAplusTemplate />} />
 

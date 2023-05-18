@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { NavLink, withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { NavLink, withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 import "../assets/styles/MaterialIcons.css";
 import Table from "./TableGrid";
 import MaterialTable from "material-table";
@@ -15,40 +15,40 @@ import "../assets/styles/bannerdetails.css";
 import Button from "@material-ui/core/Button";
 
 function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ paddingLeft: 23 }}>
-      {props.children}
-    </Typography>
-  );
+    return (
+        <Typography component="div" style={{ paddingLeft: 23 }}>
+            {props.children}
+        </Typography>
+    );
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
-const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-    marginTop: "70px",
-  },
-  tableStyle: {
-    width: "100%",
-  },
-  buttonStyle: {
-    margin: theme.spacing.unit,
-  },
-  IconStyle: {
-    marginRight: theme.spacing.unit,
-  },
-  tabStyle: {
-    marginLeft: "23px",
-  },
-  tabNameStyle: {
-    fontSize: 14,
-    fontFamily: "ProximaNova-SemiBold",
-    textTransform: "none",
-    textDecoration: "none",
-  },
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        marginTop: '70px'
+    },
+    tableStyle: {
+        width: '100%',
+    },
+    buttonStyle: {
+        margin: theme.spacing.unit,
+    },
+    IconStyle: {
+        marginRight: theme.spacing.unit,
+    },
+    tabStyle: {
+        marginLeft: '23px'
+    },
+    tabNameStyle: {
+        fontSize: 14,
+        fontFamily: "ProximaNova-SemiBold",
+        textTransform: "none",
+        textDecoration: "none"
+    }
 });
 
 class BannerDetails extends Component {
@@ -193,11 +193,8 @@ class BannerDetails extends Component {
     return (
       <div className={classes.root}>
         <p>Banner :</p>
-        <img
-          className="imageWidth"
-          src={this.state.responseObject["s3Path"]}
-        ></img>
-
+        <img className="imageWidth" src={this.state.responseObject['s3Path']}></img>
+       
         <MaterialTable
           title="Banner Details"
           columns={[
@@ -314,29 +311,30 @@ class BannerDetails extends Component {
     );
   }
 }
-//  <p>Banner type:{this.state.responseObject['bannerType']}</p>
-//  <p>Content type:{this.state.responseObject['contentType']}</p>
-//  <p>created By:{this.state.responseObject['createdBy']}</p>
-//  <p>created By ID:{this.state.responseObject['createdById']}</p>
-//  <p>created Date:{this.state.responseObject['createdDate']}</p>
-//  <p>Description:{this.state.responseObject['description']}</p>
-//  <p>Device Type:{this.state.responseObject['deviceType']}</p>
-//  <p>Display Name:{this.state.responseObject['displayName']}</p>
-//  <p>Ec Group Names:{this.state.responseObject['ecGroupNames']}</p>
-//  <p>Internal Name:{this.state.responseObject['internalName']}</p>
-//  <p>is Active:{this.state.responseObject['isActive']}</p>
-//  <p>Review Comment:{this.state.responseObject['reviewComment']}</p>
-//  <p>Reviewed By:{this.state.responseObject['reviewedBy']}</p>
-//  <p>Status:{this.state.responseObject['status']}</p>
-//  <p>Updated Date:{this.state.responseObject['updatedDate']}</p>
-
-// </div>
+        //  <p>Banner type:{this.state.responseObject['bannerType']}</p>
+        //  <p>Content type:{this.state.responseObject['contentType']}</p>
+        //  <p>created By:{this.state.responseObject['createdBy']}</p>
+        //  <p>created By ID:{this.state.responseObject['createdById']}</p>
+        //  <p>created Date:{this.state.responseObject['createdDate']}</p>
+        //  <p>Description:{this.state.responseObject['description']}</p>
+        //  <p>Device Type:{this.state.responseObject['deviceType']}</p>
+        //  <p>Display Name:{this.state.responseObject['displayName']}</p>
+        //  <p>Ec Group Names:{this.state.responseObject['ecGroupNames']}</p>
+        //  <p>Internal Name:{this.state.responseObject['internalName']}</p>
+        //  <p>is Active:{this.state.responseObject['isActive']}</p>
+        //  <p>Review Comment:{this.state.responseObject['reviewComment']}</p>
+        //  <p>Reviewed By:{this.state.responseObject['reviewedBy']}</p>
+        //  <p>Status:{this.state.responseObject['status']}</p>
+        //  <p>Updated Date:{this.state.responseObject['updatedDate']}</p>
+         
+         
+            // </div>
 //         );
 //     }
 // }
 
 BannerDetails.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withRouter(withStyles(styles)(BannerDetails));
