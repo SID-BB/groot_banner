@@ -251,15 +251,7 @@ class OldComponent extends Component {
       .then ((response) => response.json())
       .then ((response) => {
           
-          this.setState({ecNames:response.ecGroupNames[0],selectedRadio:response.deviceType});
-          
-          
-          // this.state.ecNames = response.ecGroupNames[0];
-          // this.state.imageSize = response.bannerType;
-          // this.state.selectedRadio = response.deviceType;
-          // this.state.checkboxChecked = response.isActive;
-          // this.state.inputValue = response.displayName;
-          // this.state.multiline1Value = response.description;
+          this.setState({ecNames:response.ecGroupNames[0],selectedRadio:response.deviceType,checkboxChecked:response.isActive,inputValue:response.displayName,multiline1Value:response.description,imageSize:response.bannerType});
       })
     }
     fetch(
@@ -529,7 +521,6 @@ class OldComponent extends Component {
     const { classes } = this.props;
     const { loading } = this.state;
     const id = this.state.id;
-    console.log(this.state.selectedRadio+" Siddharth");
     return (
       <div className="root">
         <h1 className="heading">Image Upload</h1>
