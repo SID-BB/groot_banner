@@ -421,6 +421,15 @@ class OldComponent extends Component {
         if (!response.ok) {
           console.log(response.body);
           throw new Error("Failed to update the data");
+      const response = await fetch(
+        "https://qas16.bigbasket.com/content-svc/static-banner/save",
+        {
+          method: "POST",
+          headers: {
+            "x-project": "mm-canary",
+            "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+          },
+          body: excelData, // Set the request body to the FormData object
         }
       );
 
@@ -483,6 +492,14 @@ class OldComponent extends Component {
       } catch (error) {
         console.error(error); // Log any errors to the console
       }
+      const data = await response.json(); // Parse the response JSON data
+      console.log(data); // Log the response data to the console
+      var url = window.location.href;
+      var host = url.split("apluscontent/");
+      var table_url = host[0] + "apluscontent/staticbanners";
+      window.location.href = table_url;
+    } catch (error) {
+      console.error(error); // Log any errors to the console
     }
 
     // Upload image logic
