@@ -244,19 +244,22 @@ class OldComponent extends Component {
           method: "GET",
           headers: {
             "x-project": "mm-canary",
-            authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+            authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
           },
         }
       )
       .then ((response) => response.json())
       .then ((response) => {
           
-          this.state.ecNames = response.ecGroupNames[0];
-          this.state.imageSize = response.bannerType;
-          this.state.selectedRadio = response.deviceType;
-          this.state.checkboxChecked = response.isActive;
-          this.state.inputValue = response.displayName;
-          this.state.multiline1Value = response.description;
+          this.setState({ecNames:response.ecGroupNames[0],selectedRadio:response.deviceType});
+          
+          
+          // this.state.ecNames = response.ecGroupNames[0];
+          // this.state.imageSize = response.bannerType;
+          // this.state.selectedRadio = response.deviceType;
+          // this.state.checkboxChecked = response.isActive;
+          // this.state.inputValue = response.displayName;
+          // this.state.multiline1Value = response.description;
       })
     }
     fetch(
@@ -412,7 +415,7 @@ class OldComponent extends Component {
               'sec-ch-ua-mobile': '?0',
               'sec-ch-ua-platform': '"Linux"',
               'x-project': 'mm-canary',
-              authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+              authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
             },
             body: excelData, // Set the request body to the FormData object
           }
@@ -467,7 +470,7 @@ class OldComponent extends Component {
             method: "POST",
             headers: {
               "x-project": "mm-canary",
-              authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+              authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
             },
             body: excelData, // Set the request body to the FormData object
           }
@@ -526,6 +529,7 @@ class OldComponent extends Component {
     const { classes } = this.props;
     const { loading } = this.state;
     const id = this.state.id;
+    console.log(this.state.selectedRadio+" Siddharth");
     return (
       <div className="root">
         <h1 className="heading">Image Upload</h1>

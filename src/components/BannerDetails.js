@@ -86,7 +86,7 @@ class BannerDetails extends Component {
     fetch(url, {
       method: "PUT",
       headers: {
-        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
         "x-tracker": "manish-testing",
         "x-project": "mm-canary",
         Accept: "application/json",
@@ -122,7 +122,7 @@ class BannerDetails extends Component {
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"Linux"',
         "x-project": "mm-canary",
-        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
       },
       body: formdata,
     });
@@ -153,7 +153,7 @@ class BannerDetails extends Component {
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"Linux"',
         "x-project": "mm-canary",
-        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
       },
     });
   };
@@ -165,7 +165,7 @@ class BannerDetails extends Component {
       method: "GET",
       headers: {
         "x-project": "mm-canary",
-        authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
       },
     })
       .then((response) => response.json())
@@ -269,11 +269,11 @@ class BannerDetails extends Component {
             pageSize: 10,
           }}
         />
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button variant="contained" onClick={this.handleUpdateClick}>
+        
+          <Button variant="contained" onClick={this.handleUpdateClick} style={{margin:'10px'}}>
             Update
           </Button>
-        </div>
+        
         {this.state.isDraft && (
           <Button variant="contained" onClick={this.handleDraft}>
             Send for Review

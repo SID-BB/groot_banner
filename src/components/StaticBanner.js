@@ -92,7 +92,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
+                "authorization": "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -152,7 +152,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
+                "authorization": "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -196,7 +196,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
+                "authorization": "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
