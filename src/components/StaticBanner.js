@@ -79,7 +79,10 @@ class StaticBanner extends Component {
         this.handleFilterApi(field, filterTerm.toLowerCase());
       }, 300);
 
-    componentDidMount = () => {
+    componentDidMount(){
+        this.handleBannerList();
+    }
+    handleBannerList=()=>{
         // hotst + url n/both shoi/uld be from config
         let url='https://qas16.bigbasket.com/content-svc/static-banner/get/banners-list?page=1';
         fetch(url,{
@@ -224,7 +227,7 @@ class StaticBanner extends Component {
         className='refreshButton'
   onClick={(e)=>{
     this.state.fieldValue="";
-    this.componentDidMount();
+    this.handleBannerList();
 }}
 >
     refresh

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, withRouter,Link } from 'react-router-dom';
+import { NavLink, withRouter,Link,Router } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
@@ -13,6 +13,7 @@ import { apitimeout } from './api_timeout';
 // import { Link } from '@material-ui/core';
 import '../assets/styles/bannerdetails.css'
 import Button from '@material-ui/core/Button';
+
 
 
 function TabContainer(props) {
@@ -55,6 +56,7 @@ const styles = theme => ({
 class BannerDetails extends Component {
     constructor(props) {
         super(props);
+        // this.history = new Router();
         this.state = {
             data:[],
             searchText:"",
@@ -69,6 +71,7 @@ class BannerDetails extends Component {
         componentDidMount = () => {
             const { id } = this.props.match.params;
         console.log(id);
+        console.log(this.props);
         this.handleBannerDetails(id);
         }
     handleDraft=()=>{
@@ -87,8 +90,9 @@ class BannerDetails extends Component {
           },
         }
       );
-      window.location.href = grootHost + '/staticbanners';
-
+    //   window.location.href = grootHost + '/staticbanners';
+    //   window.location.reload();
+      this.props.history.push(grootHost + '/staticbanners');
 
     }
     handleReject=()=>{
@@ -122,7 +126,8 @@ class BannerDetails extends Component {
           body: formdata,
         }
       );
-      window.location.href = grootHost + '/staticbanners';
+    //   window.location.href = grootHost + '/staticbanners';
+      this.props.history.push(grootHost + '/staticbanners');
        
     }
     handleApprove=()=>{
@@ -153,7 +158,8 @@ class BannerDetails extends Component {
           },
         }
       ) 
-      window.location.href = grootHost + '/staticbanners';     
+    //   window.location.href = grootHost + '/staticbanners';   
+      this.props.history.push(grootHost + '/staticbanners');  
     }
     
     handleBannerDetails = (id) => {
