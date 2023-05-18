@@ -58,17 +58,11 @@ class StaticBanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
             tabValue: 0,
-            filterText: "",
-            filterValue:"",
-            filterColumn:"",
             data:[],
-            searchText:"",
-			isLoading: true,
+			      isLoading: true,
             fieldName:"bannerType",
             fieldValue:"",
-            searchBarRef : React.createRef()
         }
     }
     debounce(func, timeout = 300) {
@@ -92,19 +86,10 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
+                "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
-            const objectOrder = {
-                'bannerType': null,
-                'deviceType': null,
-                'displayName':null,
-                'ecGroupNames':null,
-                'isActive':null,
-                'status':null,
-              }
-            // response=Object.assign(objectOrder,response);
             for(var i = 0; i < response.length; i++) {
                 response[i]['bannerType']=<a href={grootHost +'/bannerdetails/'+response[i]['id']}>{response[i]['bannerType']}</a>
                 delete response[i]['id'];
@@ -114,25 +99,22 @@ class StaticBanner extends Component {
                 delete response[i]['fileName'];
                 delete response[i]['internalName'];
                 delete response[i]['s3Path'];
-                var arrayToString='';
-                for (var j=0;j<response[i]['ecGroupNames'].length;j++){
-                    arrayToString+=response[i]['ecGroupNames'][j]+' ';
-                }
+                var arrayToString = response[i]['ecGroupNames'].join(' ');
                 console.log(arrayToString);
                 response[i]['ecGroupNames']=arrayToString;
                 for (const key in response[i]) {  
                     if (response[i][key]==null){
-                        if (key=='createdDate' ||key=='updatedDate'){
-                            response[i][key]='';
-                        }
                         response[i][key]='';
                     }
                   }
-                response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
-                response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
+                  if (response[i]['createdDate']!=null){
+                    response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
+                  }
+                  if (response[i]['updatedDate']!=null){
+                    response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
+                  }
             }
             this.setState({data:response,isLoading:false})     
-            this.searchBarRef='' 
 
         }).catch(error=>console.log(error))
     }
@@ -144,6 +126,7 @@ class StaticBanner extends Component {
       }
 
     handleFilterApi=(columnName,columnValue)=>{
+        this.setState({isLoading:true})
         let k=columnName;
         const v=columnValue;
         const url = 'https://qas16.bigbasket.com/content-svc/static-banner/filter?filters=[{"' + k + '": "' + v + '" }]';
@@ -152,7 +135,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
+                "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -166,77 +149,31 @@ class StaticBanner extends Component {
                 delete response[i]['fileName'];
                 delete response[i]['internalName'];
                 delete response[i]['s3Path'];
-                var arrayToString='';
-                for (var j=0;j<response[i]['ecGroupNames'].length;j++){
-                    arrayToString+=response[i]['ecGroupNames'][j]+' ';
-                }
+                var arrayToString = response[i]['ecGroupNames'].join(' ');
                 console.log(arrayToString);
                 response[i]['ecGroupNames']=arrayToString;
                 for (const key in response[i]) {  
                     if (response[i][key]==null){
-                        if (key=='createdDate' ||key=='updatedDate'){
-                            response[i][key]='';
-                        }
+                        // if (key=='createdDate' ||key=='updatedDate'){
+                        //     response[i][key]='';
+                        // }
                         response[i][key]='';
                     }
                   }
-                  response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
-                  response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
+                  if (response[i]['createdDate']!=null){
+                    response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
+                  }
+                  if (response[i]['updatedDate']!=null){
+                    response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
+                  }
+                  
+                  
             }
             this.setState({data:response,isLoading:false})      
 
         }).catch(error=>console.log(error))
     }
 
-    handleSearchApi=(searchValue)=>{
-        const s=searchValue;
-        const url='https://qas16.bigbasket.com/content-svc/static-banner/search?searchQuery="'+s+'"';
-        console.log(url);
-        fetch(url,{
-            method:'GET',
-            headers:{
-                "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
-            }
-        }).then(response=>response.json()).then(response=>response.banners)
-        .then(response=>{
-            
-            for(var i = 0; i < response.length; i++) {
-
-                delete response[i]['id'];
-                delete response[i]['contentType'];
-                delete response[i]['createdById'];
-                delete response[i]['description'];
-                delete response[i]['fileName'];
-                delete response[i]['internalName'];
-                delete response[i]['s3Path'];
-                var arrayToString='';
-                for (var j=0;j<response[i]['ecGroupNames'].length;j++){
-                    arrayToString+=response[i]['ecGroupNames'][j]+' ';
-                }
-                console.log(arrayToString);
-                response[i]['ecGroupNames']=arrayToString;
-                for (const key in response[i]) {  
-                    if (response[i][key]==null){
-                        if (key=='createdDate' ||key=='updatedDate'){
-                            response[i][key]='';
-                        }
-                        response[i][key]='';
-                    }
-                  }
-                  response[i]['createdDate']=new Date(response[i]['createdDate']).toLocaleString();
-                  response[i]['updatedDate']=new Date(response[i]['updatedDate']).toLocaleString();
-            }
-            this.setState({data:response,isLoading:false})
-        }).catch(error=>console.log(error))
-        return null;
-    }
-    // handleKeyEnter=(e)=>{
-    //     if (e.keyCode === 13) {
-    //         console.log('You pressed the enter key!')
-    //         this.handleSearchApi(this.state.searchText);
-    //       }
-    // }
     handleDropdownChange=(e)=>{
       this.setState({fieldName:e.target.value})
     }
@@ -246,47 +183,13 @@ class StaticBanner extends Component {
         });
     }
 
-    // handleFilter = (column, value) => {
-    //     console.log('inside the handle filter');
-    //     this.handleFilterApi(column.field, value);
-    //   };
     render() {
         const { classes } = this.props;
         const data=this.state.data;
         console.log(data);
         return (
             <div className={classes.root}>
-{/* <button 
-  className='filter-button'
-  onClick={(e) => {
-    //  setSearchMovie(searchFieldValue);
-    let output = "";
-    let currentChar = this.state.filterValue.charAt(0);
-    let count = 1;
-    for (let i = 1; i < this.state.filterValue.length; i++) {
-        if (this.state.filterValue.charAt(i) === currentChar) {
-          count++;
-        } else {
-          output += currentChar;
-          currentChar = this.state.filterValue.charAt(i);
-          count = 1;
-        }
-      }
-      
-      output += currentChar;
-      console.log('the repeated words output');
-      console.log(output);
-      this.state.filterValue=output;
-    //   this.setState({filterValue:output});
-    console.log(e.target.value);
-    // this.handleFilterApi("deviceType",this.state.searchText);
-    this.handleFilterApi('deviceType',this.state.filterValue);
-    //  this.handleFilterSearch(e.target.value,'bannerType');
-    //  this.handleFilterApi("deviceType","e.target.value");
-  }}
->
-  Filter
-</button> */}
+
 <div className='iconButton'>
 <IconButton  aria-label="Add" onClick={this.handleButtonClick} style={{cursor:"pointer"}}>
       <AddIcon />
@@ -307,18 +210,12 @@ class StaticBanner extends Component {
             <option value="reviewedBy">Reviewed By</option>
             <option value="updatedDate">Updated Date</option>
           </select>
-        
-          
           <input  className='searchBox' type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
           <button 
   className='submitButton'
   onClick={(e) => {
-    //  setSearchMovie(searchFieldValue);
     console.log(e.target.value);
-    // this.handleFilterApi("deviceType",this.state.searchText);
     this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
-    //  this.handleFilterSearch(e.target.value,'bannerType');
-    //  this.handleFilterApi("deviceType","e.target.value");
   }}
 >
   Search

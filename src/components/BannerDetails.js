@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter,Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
@@ -10,7 +10,7 @@ import "../assets/styles/MaterialIcons.css";
 import Table from './TableGrid';
 import MaterialTable from 'material-table';
 import { apitimeout } from './api_timeout';
-import { Link } from '@material-ui/core';
+// import { Link } from '@material-ui/core';
 import '../assets/styles/bannerdetails.css'
 import Button from '@material-ui/core/Button';
 
@@ -56,26 +56,18 @@ class BannerDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
-            tabValue: 0,
-            filterText: "",
-            filterValue:"",
-            filterColumn:"",
             data:[],
             searchText:"",
 			isLoading: true,
-            searchBarRef : React.createRef(),
             responseObject:[],
-            bannerId:0,
             isDraft:false,
             isReviewPending:false,
+            reviewComment:'',
         }
     }
     
         componentDidMount = () => {
             const { id } = this.props.match.params;
-        this.setState({bannerId:id})
-        console.log(this.state.bannerId);
         console.log(id);
         this.handleBannerDetails(id);
         }
@@ -88,20 +80,22 @@ class BannerDetails extends Component {
           method: "PUT",
           headers: {
             
-            "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+            "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
             "x-tracker":"manish-testing",
             "x-project":"mm-canary",
             "Accept":"application/json",
           },
         }
       );
-      console.log('inside the draft')
+      window.location.href = grootHost + '/staticbanners';
+
+
     }
     handleReject=()=>{
         const {id}=this.props.match.params;
        let url='https://qas16.bigbasket.com/content-svc/static-banner/reject/'+id;
        var formdata = new FormData();
-       formdata.append("reviewComment", "\"banner quality is not up to the mark\"");
+       formdata.append("reviewComment", this.state.reviewComment);
        fetch(
         url,
         {
@@ -123,11 +117,12 @@ class BannerDetails extends Component {
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-platform': '"Linux"',
             'x-project': 'mm-canary',
-            'authorization': '2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz'
+            'authorization': 'eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x'
           },
           body: formdata,
         }
       );
+      window.location.href = grootHost + '/staticbanners';
        
     }
     handleApprove=()=>{
@@ -154,20 +149,20 @@ class BannerDetails extends Component {
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-platform': '"Linux"',
             'x-project': 'mm-canary',
-            'authorization': '2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz'
+            'authorization': 'eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x'
           },
         }
-      );
+      ) 
+      window.location.href = grootHost + '/staticbanners';     
     }
     
     handleBannerDetails = (id) => {
-        // hotst + url n/both shoi/uld be from config
         let url='https://qas16.bigbasket.com/content-svc/static-banner/get/'+id;
         fetch(url,{
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz"
+                "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
             }
         }).then(response=>response.json())
         .then(response=>{
@@ -178,18 +173,12 @@ class BannerDetails extends Component {
             if(response['status']=='REVIEW PENDING'){
                 this.setState({isReviewPending:true})
             }
-            this.setState({responseObject:response})
+            this.setState({responseObject:response,isLoading:false})
         }) 
         
-        // return response;
     }
     render() {
         const { classes } = this.props;
-        // const { id }= this.props.params;
-        // console.log(id);
-        
-        // console.log(responseObject);
-        // console.log('this is the valur of id ',id);
         console.log(this.state.responseObject);
         return (
             <div className={classes.root}>
@@ -225,18 +214,14 @@ class BannerDetails extends Component {
       }}    
 	  
     />
-    {this.state.isDraft&&<Button
+    {this.state.isDraft&&<div>
+        <Button
     variant='contained'
     onClick={this.handleDraft}
     >
         Send for Review
-    </Button>}
-    {/* <Button
-    variant='contained'
-    onClick={this.handleDraft()}
-    >
-        Send for Review
-    </Button> */}
+    </Button>
+    </div>}
     {this.state.isReviewPending&&<div>
     <Button
     variant='contained'
@@ -251,46 +236,15 @@ class BannerDetails extends Component {
         Approve
     </Button>
     <br></br>
-    
+    Review Comment
+    <input    className='reviewComment' size='50'type="text" value={this.state.reviewComment} onChange={(e) => this.setState({ reviewComment: e.target.value })} />
     </div>}
     
-    {/* <Button
-    variant='contained'
-    onClick={this.handleReject()}
-    >
-        Reject
-    </Button>
-    <Button
-    variant='contained'
-    onClick={this.handleApprove()}
-    >
-        Approve
-    </Button> */}
+
             </div>
         );
     }
 }
-        //  <p>Banner type:{this.state.responseObject['bannerType']}</p>
-        //  <p>Content type:{this.state.responseObject['contentType']}</p>
-        //  <p>created By:{this.state.responseObject['createdBy']}</p>
-        //  <p>created By ID:{this.state.responseObject['createdById']}</p>
-        //  <p>created Date:{this.state.responseObject['createdDate']}</p>
-        //  <p>Description:{this.state.responseObject['description']}</p>
-        //  <p>Device Type:{this.state.responseObject['deviceType']}</p>
-        //  <p>Display Name:{this.state.responseObject['displayName']}</p>
-        //  <p>Ec Group Names:{this.state.responseObject['ecGroupNames']}</p>
-        //  <p>Internal Name:{this.state.responseObject['internalName']}</p>
-        //  <p>is Active:{this.state.responseObject['isActive']}</p>
-        //  <p>Review Comment:{this.state.responseObject['reviewComment']}</p>
-        //  <p>Reviewed By:{this.state.responseObject['reviewedBy']}</p>
-        //  <p>Status:{this.state.responseObject['status']}</p>
-        //  <p>Updated Date:{this.state.responseObject['updatedDate']}</p>
-         
-         
-            // </div>
-//         );
-//     }
-// }
 
 BannerDetails.propTypes = {
     classes: PropTypes.object.isRequired,
