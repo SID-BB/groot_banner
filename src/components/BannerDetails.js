@@ -1,54 +1,54 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { NavLink, withRouter } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { NavLink, withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
 import "../assets/styles/MaterialIcons.css";
 import Table from "./TableGrid";
 import MaterialTable from "material-table";
 import { apitimeout } from "./api_timeout";
 import { Link } from "@material-ui/core";
 import "../assets/styles/bannerdetails.css";
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 
 function TabContainer(props) {
-    return (
-        <Typography component="div" style={{ paddingLeft: 23 }}>
-            {props.children}
-        </Typography>
-    );
+  return (
+    <Typography component="div" style={{ paddingLeft: 23 }}>
+      {props.children}
+    </Typography>
+  );
 }
 
 TabContainer.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
-const styles = theme => ({
-    root: {
-        flexGrow: 1,
-        marginTop: '70px'
-    },
-    tableStyle: {
-        width: '100%',
-    },
-    buttonStyle: {
-        margin: theme.spacing.unit,
-    },
-    IconStyle: {
-        marginRight: theme.spacing.unit,
-    },
-    tabStyle: {
-        marginLeft: '23px'
-    },
-    tabNameStyle: {
-        fontSize: 14,
-        fontFamily: "ProximaNova-SemiBold",
-        textTransform: "none",
-        textDecoration: "none"
-    }
+const styles = (theme) => ({
+  root: {
+    flexGrow: 1,
+    marginTop: "70px",
+  },
+  tableStyle: {
+    width: "100%",
+  },
+  buttonStyle: {
+    margin: theme.spacing.unit,
+  },
+  IconStyle: {
+    marginRight: theme.spacing.unit,
+  },
+  tabStyle: {
+    marginLeft: "23px",
+  },
+  tabNameStyle: {
+    fontSize: 14,
+    fontFamily: "ProximaNova-SemiBold",
+    textTransform: "none",
+    textDecoration: "none",
+  },
 });
 
 class BannerDetails extends Component {
@@ -65,97 +65,20 @@ class BannerDetails extends Component {
       isLoading: true,
       searchBarRef: React.createRef(),
       responseObject: [],
-      bannerId: 0,
-      isDraft: false,
-      isReviewPending: false,
     };
   }
 
   componentDidMount = () => {
     const { id } = this.props.match.params;
-    this.setState({ bannerId: id });
-    console.log(this.state.bannerId);
-    console.log(id);
     this.handleBannerDetails(id);
   };
-  handleDraft = () => {
+
+  handleUpdateClick = () => {
     const { id } = this.props.match.params;
-    let url =
-      "https://qas16.bigbasket.com/content-svc/static-banner/send-for-review/" +
-      id;
-    fetch(url, {
-      method: "PUT",
-      headers: {
-        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
-        "x-tracker": "manish-testing",
-        "x-project": "mm-canary",
-        Accept: "application/json",
-      },
-    });
-    console.log("inside the draft");
-  };
-  handleReject = () => {
-    const { id } = this.props.match.params;
-    let url =
-      "https://qas16.bigbasket.com/content-svc/static-banner/reject/" + id;
-    var formdata = new FormData();
-    formdata.append("reviewComment", '"banner quality is not up to the mark"');
-    fetch(url, {
-      method: "PUT",
-      headers: {
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        DNT: "1",
-        Pragma: "no-cache",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-        "sec-ch-ua":
-          '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Linux"',
-        "x-project": "mm-canary",
-        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
-      },
-      body: formdata,
-    });
-  };
-  handleApprove = () => {
-    const { id } = this.props.match.params;
-    let url =
-      "https://qas16.bigbasket.com/content-svc/static-banner/approve/" + id;
-    fetch(url, {
-      method: "PUT",
-      headers: {
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        DNT: "1",
-        Pragma: "no-cache",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-        "sec-ch-ua":
-          '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Linux"',
-        "x-project": "mm-canary",
-        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
-      },
-    });
+    var url = window.location.href;
+      var host = url.split("apluscontent/");
+      var table_url = host[0] + "apluscontent/form/"+id;
+      window.location.href = table_url;
   };
 
   handleBannerDetails = (id) => {
@@ -171,12 +94,7 @@ class BannerDetails extends Component {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        if (response["status"] == "DRAFT") {
-          this.setState({ isDraft: true });
-        }
-        if (response["status"] == "REVIEW PENDING") {
-          this.setState({ isReviewPending: true });
-        }
+
         this.setState({ responseObject: response });
       });
 
@@ -193,8 +111,11 @@ class BannerDetails extends Component {
     return (
       <div className={classes.root}>
         <p>Banner :</p>
-        <img className="imageWidth" src={this.state.responseObject['s3Path']}></img>
-       
+        <img
+          className="imageWidth"
+          src={this.state.responseObject["s3Path"]}
+        ></img>
+
         <MaterialTable
           title="Banner Details"
           columns={[
@@ -266,75 +187,40 @@ class BannerDetails extends Component {
             pageSize: 10,
           }}
         />
-        
-          <Button variant="contained" onClick={this.handleUpdateClick} style={{margin:'10px'}}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+            <Button
+            variant="contained"
+            onClick={this.handleUpdateClick}
+            >
             Update
-          </Button>
-        
-        {this.state.isDraft && (
-          <Button variant="contained" onClick={this.handleDraft}>
-            Send for Review
-          </Button>
-        )}
-        {/* <Button
-    variant='contained'
-    onClick={this.handleDraft()}
-    >
-        Send for Review
-    </Button> */}
-        {this.state.isReviewPending && (
-          <div>
-            <Button variant="contained" onClick={this.handleReject}>
-              Reject
-            </Button>
-            <Button variant="contained" onClick={this.handleApprove}>
-              Approve
-            </Button>
-
-            <br></br>
-          </div>
-        )}
-
-        {/* <Button
-    variant='contained'
-    onClick={this.handleReject()}
-    >
-        Reject
-    </Button>
-    <Button
-    variant='contained'
-    onClick={this.handleApprove()}
-    >
-        Approve
-    </Button> */}
+            </Button></div>
       </div>
     );
   }
 }
-        //  <p>Banner type:{this.state.responseObject['bannerType']}</p>
-        //  <p>Content type:{this.state.responseObject['contentType']}</p>
-        //  <p>created By:{this.state.responseObject['createdBy']}</p>
-        //  <p>created By ID:{this.state.responseObject['createdById']}</p>
-        //  <p>created Date:{this.state.responseObject['createdDate']}</p>
-        //  <p>Description:{this.state.responseObject['description']}</p>
-        //  <p>Device Type:{this.state.responseObject['deviceType']}</p>
-        //  <p>Display Name:{this.state.responseObject['displayName']}</p>
-        //  <p>Ec Group Names:{this.state.responseObject['ecGroupNames']}</p>
-        //  <p>Internal Name:{this.state.responseObject['internalName']}</p>
-        //  <p>is Active:{this.state.responseObject['isActive']}</p>
-        //  <p>Review Comment:{this.state.responseObject['reviewComment']}</p>
-        //  <p>Reviewed By:{this.state.responseObject['reviewedBy']}</p>
-        //  <p>Status:{this.state.responseObject['status']}</p>
-        //  <p>Updated Date:{this.state.responseObject['updatedDate']}</p>
-         
-         
-            // </div>
+//  <p>Banner type:{this.state.responseObject['bannerType']}</p>
+//  <p>Content type:{this.state.responseObject['contentType']}</p>
+//  <p>created By:{this.state.responseObject['createdBy']}</p>
+//  <p>created By ID:{this.state.responseObject['createdById']}</p>
+//  <p>created Date:{this.state.responseObject['createdDate']}</p>
+//  <p>Description:{this.state.responseObject['description']}</p>
+//  <p>Device Type:{this.state.responseObject['deviceType']}</p>
+//  <p>Display Name:{this.state.responseObject['displayName']}</p>
+//  <p>Ec Group Names:{this.state.responseObject['ecGroupNames']}</p>
+//  <p>Internal Name:{this.state.responseObject['internalName']}</p>
+//  <p>is Active:{this.state.responseObject['isActive']}</p>
+//  <p>Review Comment:{this.state.responseObject['reviewComment']}</p>
+//  <p>Reviewed By:{this.state.responseObject['reviewedBy']}</p>
+//  <p>Status:{this.state.responseObject['status']}</p>
+//  <p>Updated Date:{this.state.responseObject['updatedDate']}</p>
+
+// </div>
 //         );
 //     }
 // }
 
 BannerDetails.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withRouter(withStyles(styles)(BannerDetails));

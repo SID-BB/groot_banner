@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
-import 'regenerator-runtime/runtime'
+import "regenerator-runtime/runtime";
 import Button from "@material-ui/core/Button";
 import {
   FormControl,
@@ -203,6 +203,7 @@ class OldComponent extends Component {
     super(props);
 
     this.state = {
+      id: null,
       image: "",
       options: [],
       loading: true,
@@ -364,32 +365,34 @@ class OldComponent extends Component {
   }
 
   async handleSubmit(event) {
-    event.preventDefault();
-    const { imageFile, imageSize } = this.state;
-    const sizeError = await this.validateSize(imageFile, imageSize);
-    if (sizeError) {
-      this.setState({ errorMessage: sizeError });
-      return;
-    }
+    
+    if (this.state.id) {
+      event.preventDefault();
+      const { imageFile, imageSize } = this.state;
+      const sizeError = await this.validateSize(imageFile, imageSize);
+      if (sizeError) {
+        this.setState({ errorMessage: sizeError });
+        return;
+      }
 
-    try {
-      var excelData = new FormData();
-      var arr = [];
-      arr.push(this.state.ecNames);
-      excelData.append("file", imageFile);
-      excelData.append(
-        "data",
-        JSON.stringify({
-          ecGroupNames: arr,
-          deviceType: this.state.selectedRadio,
-          isActive: this.state.checkboxChecked == true ? 1 : 0,
-          displayName: this.state.inputValue,
-          description: this.state.multiline1Value,
-          contentType: "Banner",
-          bannerType: this.state.imageSize,
-        })
-      );
-      // Create a new FormData object from the form
+      try {
+        var excelData = new FormData();
+        var arr = [];
+        arr.push(this.state.ecNames);
+        excelData.append("file", imageFile);
+        excelData.append(
+          "data",
+          JSON.stringify({
+            ecGroupNames: arr,
+            deviceType: this.state.selectedRadio,
+            isActive: this.state.checkboxChecked == true ? 1 : 0,
+            displayName: this.state.inputValue,
+            description: this.state.multiline1Value,
+            contentType: "Banner",
+            bannerType: this.state.imageSize,
+          })
+        );
+        // Create a new FormData object from the form
 
         const response = await fetch(
           "https://qas16.bigbasket.com/content-svc/static-banner/update/"+this.state.id,
@@ -421,21 +424,16 @@ class OldComponent extends Component {
         if (!response.ok) {
           console.log(response.body);
           throw new Error("Failed to update the data");
-      const response = await fetch(
-        "https://qas16.bigbasket.com/content-svc/static-banner/save",
-        {
-          method: "POST",
-          headers: {
-            "x-project": "mm-canary",
-            "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
-          },
-          body: excelData, // Set the request body to the FormData object
         }
-      );
 
-      if (!response.ok) {
-        console.log(response.body);
-        throw new Error("Failed to save the data");
+        const data = await response.json(); // Parse the response JSON data
+        console.log(data); // Log the response data to the console
+        var url = window.location.href;
+        var host = url.split("apluscontent/");
+        var table_url = host[0] + "apluscontent/staticbanners";
+        window.location.href = table_url;
+      } catch (error) {
+        console.error(error); // Log any errors to the console
       }
 
     } else {
@@ -492,14 +490,6 @@ class OldComponent extends Component {
       } catch (error) {
         console.error(error); // Log any errors to the console
       }
-      const data = await response.json(); // Parse the response JSON data
-      console.log(data); // Log the response data to the console
-      var url = window.location.href;
-      var host = url.split("apluscontent/");
-      var table_url = host[0] + "apluscontent/staticbanners";
-      window.location.href = table_url;
-    } catch (error) {
-      console.error(error); // Log any errors to the console
     }
 
     // Upload image logic
@@ -696,36 +686,8 @@ class OldComponent extends Component {
         </div>
         <div className="formItem">
           <button className="button" onClick={this.handleSubmit}>
-            Submit
+          {this.state.id ? 'Update' : 'Save'}
           </button>
-          <div className="buttonGroup">
-            <button
-              className="button"
-              // onClick={this.handleDraft}
-            >
-              Draft
-            </button>
-            <button
-              className="button"
-              // onClick={this.handleReview}
-            >
-              Review
-            </button>
-          </div>
-          <div className="buttonGroup">
-            <button
-              className="button"
-              // onClick={this.handleDraft}
-            >
-              Accept
-            </button>
-            <button
-              className="button"
-              // onClick={this.handleReview}
-            >
-              Reject
-            </button>
-          </div>
         </div>
         {this.state.errorMessage && (
           <p className="errorMessage">{this.state.errorMessage}</p>
