@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink, withRouter, Link, Router } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
@@ -10,9 +10,9 @@ import "../assets/styles/MaterialIcons.css";
 import Table from "./TableGrid";
 import MaterialTable from "material-table";
 import { apitimeout } from "./api_timeout";
-import { Link } from "@material-ui/core";
+// import { Link } from '@material-ui/core';
 import "../assets/styles/bannerdetails.css";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 function TabContainer(props) {
   return (
@@ -54,17 +54,15 @@ const styles = (theme) => ({
 class BannerDetails extends Component {
   constructor(props) {
     super(props);
+    // this.history = new Router();
     this.state = {
-      open: false,
-      tabValue: 0,
-      filterText: "",
-      filterValue: "",
-      filterColumn: "",
       data: [],
       searchText: "",
       isLoading: true,
-      searchBarRef: React.createRef(),
       responseObject: [],
+      isDraft: false,
+      isReviewPending: false,
+      reviewComment: "",
     };
   }
 
@@ -73,14 +71,100 @@ class BannerDetails extends Component {
     this.handleBannerDetails(id);
   };
 
+  handleDraft = () => {
+    const { id } = this.props.match.params;
+    let url =
+      "https://qas16.bigbasket.com/content-svc/static-banner/send-for-review/" +
+      id;
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
+        "x-tracker": "manish-testing",
+        "x-project": "mm-canary",
+        Accept: "application/json",
+      },
+    });
+    //   window.location.href = grootHost + '/staticbanners';
+    //   window.location.reload();
+    this.props.history.push(grootHost + "/staticbanners");
+  };
+
   handleUpdateClick = () => {
     const { id } = this.props.match.params;
     var url = window.location.href;
-      var host = url.split("apluscontent/");
-      var table_url = host[0] + "apluscontent/form/"+id;
-      window.location.href = table_url;
+    var host = url.split("apluscontent/");
+    var table_url = host[0] + "apluscontent/form/" + id;
+    window.location.href = table_url;
+  };
+  handleApprove = () => {
+    const { id } = this.props.match.params;
+    let url =
+      "https://qas16.bigbasket.com/content-svc/static-banner/approve/" + id;
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        DNT: "1",
+        Pragma: "no-cache",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+        "sec-ch-ua":
+          '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Linux"',
+        "x-project": "mm-canary",
+        authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
+      },
+    });
+    //   window.location.href = grootHost + '/staticbanners';
+    this.props.history.push(grootHost + "/staticbanners");
   };
 
+  handleReject = () => {
+    const { id } = this.props.match.params;
+    let url =
+      "https://qas16.bigbasket.com/content-svc/static-banner/reject/" + id;
+    var formdata = new FormData();
+    formdata.append("reviewComment", this.state.reviewComment);
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        DNT: "1",
+        Pragma: "no-cache",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+        "sec-ch-ua":
+          '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Linux"',
+        "x-project": "mm-canary",
+        authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
+      },
+      body: formdata,
+    });
+    //   window.location.href = grootHost + '/staticbanners';
+    this.props.history.push(grootHost + "/staticbanners");
+  };
   handleBannerDetails = (id) => {
     // hotst + url n/both shoi/uld be from config
     let url = "https://qas16.bigbasket.com/content-svc/static-banner/get/" + id;
@@ -100,13 +184,30 @@ class BannerDetails extends Component {
 
     // return response;
   };
+
+  handleBannerDetails = (id) => {
+    let url = "https://qas16.bigbasket.com/content-svc/static-banner/get/" + id;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "x-project": "mm-canary",
+        authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response["status"] == "DRAFT") {
+          this.setState({ isDraft: true });
+        }
+        if (response["status"] == "REVIEW PENDING") {
+          this.setState({ isReviewPending: true });
+        }
+        this.setState({ responseObject: response, isLoading: false });
+      });
+  };
   render() {
     const { classes } = this.props;
-    // const { id }= this.props.params;
-    // console.log(id);
-
-    // console.log(responseObject);
-    // console.log('this is the valur of id ',id);
     console.log(this.state.responseObject);
     return (
       <div className={classes.root}>
@@ -187,37 +288,40 @@ class BannerDetails extends Component {
             pageSize: 10,
           }}
         />
-        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <Button
-            variant="contained"
-            onClick={this.handleUpdateClick}
-            >
-            Update
-            </Button></div>
+
+        <Button variant="contained" onClick={this.handleUpdateClick}>
+          Update
+        </Button>
+        {this.state.isDraft && (
+          <div>
+            <Button variant="contained" onClick={this.handleDraft}>
+              Send for Review
+            </Button>
+          </div>
+        )}
+        {this.state.isReviewPending && (
+          <div>
+            <Button variant="contained" onClick={this.handleReject}>
+              Reject
+            </Button>
+            <Button variant="contained" onClick={this.handleApprove}>
+              Approve
+            </Button>
+            <br></br>
+            Review Comment
+            <input
+              className="reviewComment"
+              size="50"
+              type="text"
+              value={this.state.reviewComment}
+              onChange={(e) => this.setState({ reviewComment: e.target.value })}
+            />
+          </div>
+        )}
       </div>
     );
   }
 }
-//  <p>Banner type:{this.state.responseObject['bannerType']}</p>
-//  <p>Content type:{this.state.responseObject['contentType']}</p>
-//  <p>created By:{this.state.responseObject['createdBy']}</p>
-//  <p>created By ID:{this.state.responseObject['createdById']}</p>
-//  <p>created Date:{this.state.responseObject['createdDate']}</p>
-//  <p>Description:{this.state.responseObject['description']}</p>
-//  <p>Device Type:{this.state.responseObject['deviceType']}</p>
-//  <p>Display Name:{this.state.responseObject['displayName']}</p>
-//  <p>Ec Group Names:{this.state.responseObject['ecGroupNames']}</p>
-//  <p>Internal Name:{this.state.responseObject['internalName']}</p>
-//  <p>is Active:{this.state.responseObject['isActive']}</p>
-//  <p>Review Comment:{this.state.responseObject['reviewComment']}</p>
-//  <p>Reviewed By:{this.state.responseObject['reviewedBy']}</p>
-//  <p>Status:{this.state.responseObject['status']}</p>
-//  <p>Updated Date:{this.state.responseObject['updatedDate']}</p>
-
-// </div>
-//         );
-//     }
-// }
 
 BannerDetails.propTypes = {
   classes: PropTypes.object.isRequired,
