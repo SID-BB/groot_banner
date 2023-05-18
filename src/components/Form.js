@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
-import 'regenerator-runtime/runtime'
+import "regenerator-runtime/runtime";
 import Button from "@material-ui/core/Button";
 import {
   FormControl,
@@ -203,6 +203,7 @@ class OldComponent extends Component {
     super(props);
 
     this.state = {
+      id: null,
       image: "",
       options: [],
       loading: true,
@@ -232,6 +233,32 @@ class OldComponent extends Component {
   }
 
   componentDidMount() {
+    const url = window.location.href;
+    const par = url.split("form/");
+    const id = parseInt(par[1]);
+    this.state.id= id;
+    if (id) {
+      fetch(
+        "https://qas16.bigbasket.com/content-svc/static-banner/get/"+id,
+        {
+          method: "GET",
+          headers: {
+            "x-project": "mm-canary",
+            authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+          },
+        }
+      )
+      .then ((response) => response.json())
+      .then ((response) => {
+          
+          this.state.ecNames = response.ecGroupNames[0];
+          this.state.imageSize = response.bannerType;
+          this.state.selectedRadio = response.deviceType;
+          this.state.checkboxChecked = response.isActive;
+          this.state.inputValue = response.displayName;
+          this.state.multiline1Value = response.description;
+      })
+    }
     fetch(
       "http://hqasvc-alb.bigbasket.com/config_svc/internal/v1/ec-group-type/?ec-group-type-slug=cart-v2",
       {
@@ -335,58 +362,131 @@ class OldComponent extends Component {
   }
 
   async handleSubmit(event) {
-    event.preventDefault();
-    const { imageFile, imageSize } = this.state;
-    const sizeError = await this.validateSize(imageFile, imageSize);
-    if (sizeError) {
-      this.setState({ errorMessage: sizeError });
-      return;
-    }
-
-    try {
-      var excelData = new FormData();
-      var arr = [];
-      arr.push(this.state.ecNames);
-      excelData.append("file", imageFile);
-      excelData.append(
-        "data",
-        JSON.stringify({
-          ecGroupNames: arr,
-          deviceType: this.state.selectedRadio,
-          isActive: this.state.checkboxChecked == true ? 1 : 0,
-          displayName: this.state.inputValue,
-          description: this.state.multiline1Value,
-          contentType: "Banner",
-          bannerType: this.state.imageSize,
-        })
-      );
-      // Create a new FormData object from the form
-
-      const response = await fetch(
-        "https://qas16.bigbasket.com/content-svc/static-banner/save",
-        {
-          method: "POST",
-          headers: {
-            "x-project": "mm-canary",
-            "authorization": "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
-          },
-          body: excelData, // Set the request body to the FormData object
-        }
-      );
-
-      if (!response.ok) {
-        console.log(response.body);
-        throw new Error("Failed to save the data");
+    
+    if (this.state.id) {
+      event.preventDefault();
+      const { imageFile, imageSize } = this.state;
+      const sizeError = await this.validateSize(imageFile, imageSize);
+      if (sizeError) {
+        this.setState({ errorMessage: sizeError });
+        return;
       }
 
-      const data = await response.json(); // Parse the response JSON data
-      console.log(data); // Log the response data to the console
-      var url = window.location.href;
-      var host = url.split("apluscontent/");
-      var table_url = host[0] + "apluscontent/staticbanners";
-      window.location.href = table_url;
-    } catch (error) {
-      console.error(error); // Log any errors to the console
+      try {
+        var excelData = new FormData();
+        var arr = [];
+        arr.push(this.state.ecNames);
+        excelData.append("file", imageFile);
+        excelData.append(
+          "data",
+          JSON.stringify({
+            ecGroupNames: arr,
+            deviceType: this.state.selectedRadio,
+            isActive: this.state.checkboxChecked == true ? 1 : 0,
+            displayName: this.state.inputValue,
+            description: this.state.multiline1Value,
+            contentType: "Banner",
+            bannerType: this.state.imageSize,
+          })
+        );
+        // Create a new FormData object from the form
+
+        const response = await fetch(
+          "https://qas16.bigbasket.com/content-svc/static-banner/update/"+this.state.id,
+          {
+            method: "PUT",
+            headers: {
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+              'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8',
+              'Cache-Control': 'no-cache',
+              'Connection': 'keep-alive',
+              'DNT': '1',
+              'Pragma': 'no-cache',
+              'Sec-Fetch-Dest': 'document',
+              'Sec-Fetch-Mode': 'navigate',
+              'Sec-Fetch-Site': 'none',
+              'Sec-Fetch-User': '?1',
+              'Upgrade-Insecure-Requests': '1',
+              'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+              'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+              'sec-ch-ua-mobile': '?0',
+              'sec-ch-ua-platform': '"Linux"',
+              'x-project': 'mm-canary',
+              authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+            },
+            body: excelData, // Set the request body to the FormData object
+          }
+        );
+
+        if (!response.ok) {
+          console.log(response.body);
+          throw new Error("Failed to update the data");
+        }
+
+        const data = await response.json(); // Parse the response JSON data
+        console.log(data); // Log the response data to the console
+        var url = window.location.href;
+        var host = url.split("apluscontent/");
+        var table_url = host[0] + "apluscontent/staticbanners";
+        window.location.href = table_url;
+      } catch (error) {
+        console.error(error); // Log any errors to the console
+      }
+
+    } else {
+      event.preventDefault();
+      const { imageFile, imageSize } = this.state;
+      const sizeError = await this.validateSize(imageFile, imageSize);
+      if (sizeError) {
+        this.setState({ errorMessage: sizeError });
+        return;
+      }
+
+      try {
+        var excelData = new FormData();
+        var arr = [];
+        arr.push(this.state.ecNames);
+        excelData.append("file", imageFile);
+        excelData.append(
+          "data",
+          JSON.stringify({
+            ecGroupNames: arr,
+            deviceType: this.state.selectedRadio,
+            isActive: this.state.checkboxChecked == true ? 1 : 0,
+            displayName: this.state.inputValue,
+            description: this.state.multiline1Value,
+            contentType: "Banner",
+            bannerType: this.state.imageSize,
+          })
+        );
+        // Create a new FormData object from the form
+
+        const response = await fetch(
+          "https://qas16.bigbasket.com/content-svc/static-banner/save",
+          {
+            method: "POST",
+            headers: {
+              "x-project": "mm-canary",
+              authorization: "2s-gbqV5X-5tUlRCGaPb9WQan5KCSIGz",
+            },
+            body: excelData, // Set the request body to the FormData object
+          }
+        );
+
+        if (!response.ok) {
+          console.log(response.body);
+          throw new Error("Failed to save the data");
+        }
+
+        const data = await response.json(); // Parse the response JSON data
+        console.log(data); // Log the response data to the console
+        var url = window.location.href;
+        var host = url.split("apluscontent/");
+        var table_url = host[0] + "apluscontent/staticbanners";
+        window.location.href = table_url;
+      } catch (error) {
+        console.error(error); // Log any errors to the console
+      }
     }
 
     // Upload image logic
@@ -425,6 +525,7 @@ class OldComponent extends Component {
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
+    const id = this.state.id;
     return (
       <div className="root">
         <h1 className="heading">Image Upload</h1>
@@ -581,36 +682,8 @@ class OldComponent extends Component {
         </div>
         <div className="formItem">
           <button className="button" onClick={this.handleSubmit}>
-            Submit
+          {this.state.id ? 'Update' : 'Save'}
           </button>
-          <div className="buttonGroup">
-            <button
-              className="button"
-              // onClick={this.handleDraft}
-            >
-              Draft
-            </button>
-            <button
-              className="button"
-              // onClick={this.handleReview}
-            >
-              Review
-            </button>
-          </div>
-          <div className="buttonGroup">
-            <button
-              className="button"
-              // onClick={this.handleDraft}
-            >
-              Accept
-            </button>
-            <button
-              className="button"
-              // onClick={this.handleReview}
-            >
-              Reject
-            </button>
-          </div>
         </div>
         {this.state.errorMessage && (
           <p className="errorMessage">{this.state.errorMessage}</p>
