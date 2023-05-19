@@ -13,6 +13,7 @@ import { apitimeout } from "./api_timeout";
 // import { Link } from '@material-ui/core';
 import "../assets/styles/bannerdetails.css";
 import Button from "@material-ui/core/Button";
+import { TextField } from "@material-ui/core";
 
 function TabContainer(props) {
   return (
@@ -98,6 +99,7 @@ class BannerDetails extends Component {
     window.location.href = table_url;
   };
   handleApprove = () => {
+
     const { id } = this.props.match.params;
     let url =
       "https://qas16.bigbasket.com/content-svc/static-banner/approve/" + id;
@@ -126,7 +128,7 @@ class BannerDetails extends Component {
         authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
       },
     });
-    //   window.location.href = grootHost + '/staticbanners';
+    //  window.location.href = grootHost + '/staticbanners';
     this.props.history.push(grootHost + "/staticbanners");
   };
 
@@ -289,30 +291,28 @@ class BannerDetails extends Component {
           }}
         />
 
-        <Button variant="contained" onClick={this.handleUpdateClick}>
+        <Button variant="contained" onClick={this.handleUpdateClick} style={{margin:'10px',backgroundColor:'#0277bd'}}>
           Update
         </Button>
         {this.state.isDraft && (
           <div>
-            <Button variant="contained" onClick={this.handleDraft}>
+            <Button variant="contained" onClick={this.handleDraft} style={{margin:'10px',backgroundColor:'#aa00ff'}}>
               Send for Review
             </Button>
           </div>
         )}
         {this.state.isReviewPending && (
           <div>
-            <Button variant="contained" onClick={this.handleReject}>
+            <Button variant="contained" onClick={this.handleReject} style={{margin:'10px',backgroundColor:'#d50000'}}>
               Reject
             </Button>
-            <Button variant="contained" onClick={this.handleApprove}>
+            <Button variant="contained" onClick={this.handleApprove} style={{margin:'10px',backgroundColor:'#8bc34a'}}>
               Approve
             </Button>
             <br></br>
-            Review Comment
-            <input
-              className="reviewComment"
-              size="50"
-              type="text"
+            <b>Review Comment</b> <br></br>
+            <TextField
+              variant="outlined"
               value={this.state.reviewComment}
               onChange={(e) => this.setState({ reviewComment: e.target.value })}
             />

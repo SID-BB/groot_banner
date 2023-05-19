@@ -676,7 +676,7 @@ class OldComponent extends Component {
           />
         </div>
         <div className="formItem">
-          <button className="button" onClick={this.handleSubmit}>
+          <button className="button" onClick={this.handleSubmit} style={{backgroundColor:'#1565c0'}}>
           {this.state.id ? 'Update' : 'Save'}
           </button>
         </div>
