@@ -85,11 +85,96 @@ class BannerDetails extends Component {
         "x-project": "mm-canary",
         Accept: "application/json",
       },
-    });
+    }).then(()=>{
+        this.props.history.push(grootHost + '/staticbanners'); 
+      })
+      .catch((error) => {
+        // Handle error if needed
+        console.error(error);
+      });
     //   window.location.href = grootHost + '/staticbanners';
     //   window.location.reload();
-    this.props.history.push(grootHost + "/staticbanners");
   };
+
+  handleReject=()=>{
+    const {id}=this.props.match.params;
+   let url='https://qas16.bigbasket.com/content-svc/static-banner/reject/'+id;
+   var formdata = new FormData();
+   formdata.append("reviewComment", this.state.reviewComment);
+   fetch(
+    url,
+    {
+      method: "PUT",
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Pragma': 'no-cache',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+        'x-project': 'mm-canary',
+        'authorization': 'eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x'
+      },
+      body: formdata,
+    }
+  ).then(()=>{
+    this.props.history.push(grootHost + '/staticbanners'); 
+  })
+  .catch((error) => {
+    // Handle error if needed
+    console.error(error);
+  });
+//   window.location.href = grootHost + '/staticbanners';
+   
+}
+handleApprove=()=>{
+    const {id}=this.props.match.params;
+   let url='https://qas16.bigbasket.com/content-svc/static-banner/approve/'+id;
+   fetch(
+    url,
+    {
+      method: "PUT",
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Pragma': 'no-cache',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+        'x-project': 'mm-canary',
+        'authorization': 'eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x'
+      },
+    }
+  ).then(()=>{
+    this.props.history.push(grootHost + '/staticbanners'); 
+  })
+  .catch((error) => {
+    // Handle error if needed
+    console.error(error);
+  });
+//   window.location.href = grootHost + '/staticbanners';  
+//   setTimeout(this.props.history.push(grootHost + '/staticbanners'),2000);
+   
+}
+
 
   handleUpdateClick = () => {
     const { id } = this.props.match.params;
@@ -167,47 +252,28 @@ class BannerDetails extends Component {
     //   window.location.href = grootHost + '/staticbanners';
     this.props.history.push(grootHost + "/staticbanners");
   };
-  handleBannerDetails = (id) => {
-    // hotst + url n/both shoi/uld be from config
-    let url = "https://qas16.bigbasket.com/content-svc/static-banner/get/" + id;
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "x-project": "mm-canary",
-        authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-
-        this.setState({ responseObject: response });
-      });
-
-    // return response;
-  };
 
   handleBannerDetails = (id) => {
-    let url = "https://qas16.bigbasket.com/content-svc/static-banner/get/" + id;
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "x-project": "mm-canary",
-        authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
+    let url='https://qas16.bigbasket.com/content-svc/static-banner/get/'+id;
+    fetch(url,{
+        method:'GET',
+        headers:{
+            "x-project": "mm-canary",
+            "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
+        }
+    }).then(response=>response.json())
+    .then(response=>{
         console.log(response);
-        if (response["status"] == "DRAFT") {
-          this.setState({ isDraft: true });
+        if(response['status']=='DRAFT'){
+            this.setState({isDraft:true})
         }
-        if (response["status"] == "REVIEW PENDING") {
-          this.setState({ isReviewPending: true });
+        if(response['status']=='REVIEW PENDING'){
+            this.setState({isReviewPending:true})
         }
-        this.setState({ responseObject: response, isLoading: false });
-      });
-  };
+        this.setState({responseObject:response,isLoading:false})
+    }) 
+    
+}
   render() {
     const { classes } = this.props;
     console.log(this.state.responseObject);
@@ -287,7 +353,7 @@ class BannerDetails extends Component {
           options={{
             filtering: false,
             search: false,
-            pageSize: 10,
+            pageSize: 20,
           }}
         />
 
