@@ -80,6 +80,7 @@ class StaticBanner extends Component {
       }, 300);
 
     componentDidMount(){
+        // setTimeout(this.handleBannerList(),3000);
         this.handleBannerList();
     }
     handleBannerList=()=>{
@@ -255,7 +256,7 @@ class StaticBanner extends Component {
       options={{
         filtering: false,
         search:false,
-        pageSize: 10
+        pageSize: 20,
       }}    
 	  isLoading={this.state.isLoading}
     />
