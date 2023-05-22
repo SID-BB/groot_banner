@@ -80,7 +80,7 @@ class BannerDetails extends Component {
     fetch(url, {
       method: "PUT",
       headers: {
-        authorization: "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x",
+        authorization: "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo",
         "x-tracker": "manish-testing",
         "x-project": "mm-canary",
         Accept: "application/json",
@@ -122,7 +122,7 @@ class BannerDetails extends Component {
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Linux"',
         'x-project': 'mm-canary',
-        'authorization': 'eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x'
+        'authorization': 'LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo'
       },
       body: formdata,
     }
@@ -160,7 +160,7 @@ handleApprove=()=>{
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Linux"',
         'x-project': 'mm-canary',
-        'authorization': 'eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x'
+        'authorization': 'LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo'
       },
     }
   ).then(()=>{
@@ -190,7 +190,7 @@ handleApprove=()=>{
         method:'GET',
         headers:{
             "x-project": "mm-canary",
-            "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
+            "authorization": "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo"
         }
     }).then(response=>response.json())
     .then(response=>{

@@ -13,9 +13,11 @@
 .searchBox{
     margin-top: 2%;
     margin-left: 0%;
+    width: 300px;
 }
 .submitButton{
     margin-top: 2%;
+    background-color:'#8bc34a';
 }
 .refreshButton{
     margin-top: 2%;

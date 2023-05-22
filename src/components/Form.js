@@ -244,7 +244,7 @@ class OldComponent extends Component {
           method: "GET",
           headers: {
             "x-project": "mm-canary",
-            authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
+            authorization: "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo",
           },
         }
       )
@@ -407,7 +407,7 @@ class OldComponent extends Component {
               'sec-ch-ua-mobile': '?0',
               'sec-ch-ua-platform': '"Linux"',
               'x-project': 'mm-canary',
-              authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
+              authorization: "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo",
             },
             body: excelData, // Set the request body to the FormData object
           }
@@ -462,7 +462,7 @@ class OldComponent extends Component {
             method: "POST",
             headers: {
               "x-project": "mm-canary",
-              authorization: "xgEpDMM1WoZUxo_h1-e5X2uldD-MQoZJ",
+              authorization: "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo",
             },
             body: excelData, // Set the request body to the FormData object
           }

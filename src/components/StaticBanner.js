@@ -10,12 +10,13 @@ import "../assets/styles/MaterialIcons.css";
 import Table from './TableGrid';
 import MaterialTable from 'material-table';
 import { apitimeout } from './api_timeout';
-import { Link } from '@material-ui/core';
-import Button from "@material-ui/core";
+import { Link, TextField } from '@material-ui/core';
+// import Button from "@material-ui/core";
 import AddCircle from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import '../assets/styles/staticbanner.css';
+import Button from "@material-ui/core/Button";
 
 function TabContainer(props) {
     return (
@@ -90,7 +91,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
+                "authorization": "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -139,7 +140,7 @@ class StaticBanner extends Component {
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "eEEM7k78fGfyfy7XQJcyAeekCdeV3u5x"
+                "authorization": "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -215,6 +216,22 @@ class StaticBanner extends Component {
             <option value="updatedDate">Updated Date</option>
           </select>
           <input  className='searchBox' type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
+          {/* <TextField
+              // className='searchBox'
+              variant="outlined"
+              value={this.state.fieldValue}
+              onKeyDown={this.handleTextChange} 
+              onChange={this.handleTextChange}
+              inputProps={{
+                style: {
+                  height: "10px",
+                  width:"300px",
+                  marginTop:'4%',
+                  border:"500px",
+                },
+              }}
+
+            /> */}
           <button 
   className='submitButton'
   onClick={(e) => {
@@ -223,8 +240,19 @@ class StaticBanner extends Component {
   }}
 >
   Search
+</button> 
+<button
+        className='refreshButton'
+  onClick={(e)=>{
+    this.setState({isLoading:true})
+    this.state.fieldValue="";
+    this.handleBannerList();
+}}
+>
+    refresh
 </button>
-        <button
+
+        {/* <button
         className='refreshButton'
   onClick={(e)=>{
     this.state.fieldValue="";
@@ -232,7 +260,21 @@ class StaticBanner extends Component {
 }}
 >
     refresh
-</button> 
+</button>
+{/* <Button 
+variant="contained"
+onClick={(e) => {
+  console.log(e.target.value);
+  this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
+}}
+>search</Button>
+<Button 
+variant="contained"
+onClick={(e) => {
+  console.log(e.target.value);
+  this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
+}}
+>Refresh</Button> */}
 <div className='materialTable'>
 <MaterialTable
       title="List of banners"
