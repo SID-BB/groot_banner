@@ -35,97 +35,97 @@ class Main extends Component {
     let authToken = null;
     let sourceHost = null;
 
-  //   if (typeof paramUrl !== "undefined") {
-  //     authToken = paramUrl.split("&source=")[0];
-  //     sourceHost = paramUrl.split("&source=")[1];
-  //   }
+    if (typeof paramUrl !== "undefined") {
+      authToken = paramUrl.split("&source=")[0];
+      sourceHost = paramUrl.split("&source=")[1];
+    }
     
-  //   if (localStorage.getItem('userPermission') === null || (localStorage.getItem('token') !== authToken && authToken !== null)) {
+    if (localStorage.getItem('userPermission') === null || (localStorage.getItem('token') !== authToken && authToken !== null)) {
 
-  //     if (typeof authToken !== "undefined" && authToken !== null) {
-  //       localStorage.setItem('token', authToken);
-  //     }
+      if (typeof authToken !== "undefined" && authToken !== null) {
+        localStorage.setItem('token', authToken);
+      }
       
-  //     this.setState({ loading: true });
-  //     apitimeout(pendingTimeout, fetch(host + templateAPI + '/permissions', {
-  //       method: "GET",
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         "X-Requested-With": "XMLHttpRequest",
-  //         [AuthKey]: authToken
-  //       }
-  //     })).then(response => {
-  //       if (response.status == 200) {
-  //         this.setState({ toggleApp: true, loading: false });
-  //         return response.json();
-  //       }
-  //       else if (response.status == 401) {
-  //         this.setState({ permissionSnack: true, toggleApp: false, loading: false });
-  //         setTimeout(() => {
-  //           this.setState({
-  //             permissionSnack: false
-  //           });
-  //           if (localStorage.getItem('source_host') === 'partner') {
-  //             window.location.replace(host + partnerLogoutUrl);
-  //           }
-  //           else {
-  //             window.location.replace(host + catalogHost);
-  //           }
-  //         }, timeout);
-  //       }
-  //       else {
-  //         this.setState({ toggleApp: false });
-  //         throw Error(response.statusText);
-  //       }
-  //     })
-  //       .then(result => {
-  //         if (result) {
-  //           localStorage.setItem('userPermission', result.roles);
-  //           if (result.externalUser !== null && result.externalUser !== "") {
-  //             localStorage.setItem('userManufacturer', result.externalUser.marketeer_name);
-  //           }
-  //           if (localStorage.getItem('userPermission').includes(creatorPermission)) {
-  //             this.setState({ togglePerm: true });
-  //           }
-  //           else {
-  //             this.setState({ togglePerm: false });
-  //           }
-  //         }
-  //         else {
-  //           this.setState({ errorSnackTwo: true });
-  //           setTimeout(() => {
-  //             this.setState({
-  //               errorSnackTwo: false
-  //             })
-  //           }, timeout);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         this.setState({ errorSnack: true, loading: false });
-  //         setTimeout(() => {
-  //           this.setState({
-  //             errorSnack: false
-  //           })
-  //         }, timeout);
-  //         console.log('Looks like there was a problem in fetching permissions \n', error);
-  //       });
-  //   }
+      this.setState({ loading: true });
+      apitimeout(pendingTimeout, fetch(host + templateAPI + '/permissions', {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          "X-Requested-With": "XMLHttpRequest",
+          [AuthKey]: authToken
+        }
+      })).then(response => {
+        if (response.status == 200) {
+          this.setState({ toggleApp: true, loading: false });
+          return response.json();
+        }
+        else if (response.status == 401) {
+          this.setState({ permissionSnack: true, toggleApp: false, loading: false });
+          setTimeout(() => {
+            this.setState({
+              permissionSnack: false
+            });
+            if (localStorage.getItem('source_host') === 'partner') {
+              window.location.replace(host + partnerLogoutUrl);
+            }
+            else {
+              window.location.replace(host + catalogHost);
+            }
+          }, timeout);
+        }
+        else {
+          this.setState({ toggleApp: false });
+          throw Error(response.statusText);
+        }
+      })
+        .then(result => {
+          if (result) {
+            localStorage.setItem('userPermission', result.roles);
+            if (result.externalUser !== null && result.externalUser !== "") {
+              localStorage.setItem('userManufacturer', result.externalUser.marketeer_name);
+            }
+            if (localStorage.getItem('userPermission').includes(creatorPermission)) {
+              this.setState({ togglePerm: true });
+            }
+            else {
+              this.setState({ togglePerm: false });
+            }
+          }
+          else {
+            this.setState({ errorSnackTwo: true });
+            setTimeout(() => {
+              this.setState({
+                errorSnackTwo: false
+              })
+            }, timeout);
+          }
+        })
+        .catch((error) => {
+          this.setState({ errorSnack: true, loading: false });
+          setTimeout(() => {
+            this.setState({
+              errorSnack: false
+            })
+          }, timeout);
+          console.log('Looks like there was a problem in fetching permissions \n', error);
+        });
+    }
 
-  //   if (typeof sourceHost !== "undefined" && sourceHost !== null) {
-  //     localStorage.setItem('source_host', sourceHost);
-  //   }
+    if (typeof sourceHost !== "undefined" && sourceHost !== null) {
+      localStorage.setItem('source_host', sourceHost);
+    }
 
-  //   if (localStorage.getItem('token') === null) {
-  //     if (localStorage.getItem('source_host') === 'partner') {
-  //       window.location.replace(host+ partnerLogoutUrl);
-  //     }
-  //     else {
-  //       window.location.replace(host+ catalogHost);
-  //     }
-  //   }
+    if (localStorage.getItem('token') === null) {
+      if (localStorage.getItem('source_host') === 'partner') {
+        window.location.replace(host+ partnerLogoutUrl);
+      }
+      else {
+        window.location.replace(host+ catalogHost);
+      }
+    }
 
-  //   if (localStorage.getItem('userPermission') && localStorage.getItem('token'))
-  //     this.setState({ toggleApp: true });
+    if (localStorage.getItem('userPermission') && localStorage.getItem('token'))
+      this.setState({ toggleApp: true });
   }
 
   render() {
