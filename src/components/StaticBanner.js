@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import "../assets/styles/MaterialIcons.css";
-import Table from './TableGrid';
 import MaterialTable from 'material-table';
-import { apitimeout } from './api_timeout';
-import { Link, TextField } from '@material-ui/core';
-// import Button from "@material-ui/core";
-import AddCircle from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import '../assets/styles/staticbanner.css';
-import Button from "@material-ui/core/Button";
+
 
 function TabContainer(props) {
     return (
@@ -64,6 +56,7 @@ class StaticBanner extends Component {
 			      isLoading: true,
             fieldName:"bannerType",
             fieldValue:"",
+            clientHost:"",
         }
     }
     debounce(func, timeout = 300) {
@@ -81,12 +74,12 @@ class StaticBanner extends Component {
       }, 300);
 
     componentDidMount(){
-        // setTimeout(this.handleBannerList(),3000);
+        var host = window.location.origin;
+        this.setState({ clientHost: host });
         this.handleBannerList();
     }
     handleBannerList=()=>{
-        // hotst + url n/both shoi/uld be from config
-        let url='https://qas16.bigbasket.com/content-svc/static-banner/get/banners-list?page=1';
+        let url=clientHost+'/content-svc/static-banner/get/banners-list?page=1';
         fetch(url,{
             method:'GET',
             headers:{
@@ -105,7 +98,6 @@ class StaticBanner extends Component {
                 delete response[i]['internalName'];
                 delete response[i]['s3Path'];
                 var arrayToString = response[i]['ecGroupNames'].join(' ');
-                console.log(arrayToString);
                 response[i]['ecGroupNames']=arrayToString;
                 for (const key in response[i]) {  
                     if (response[i][key]==null){
@@ -134,8 +126,7 @@ class StaticBanner extends Component {
         this.setState({isLoading:true})
         let k=columnName;
         const v=columnValue;
-        const url = 'https://qas16.bigbasket.com/content-svc/static-banner/filter?filters=[{"' + k + '": "' + v + '" }]';
-        console.log(url);
+        const url = clientHost+'/content-svc/static-banner/filter?filters=[{"' + k + '": "' + v + '" }]';
         fetch(url,{
             method:'GET',
             headers:{
@@ -159,9 +150,6 @@ class StaticBanner extends Component {
                 response[i]['ecGroupNames']=arrayToString;
                 for (const key in response[i]) {  
                     if (response[i][key]==null){
-                        // if (key=='createdDate' ||key=='updatedDate'){
-                        //     response[i][key]='';
-                        // }
                         response[i][key]='';
                     }
                   }
@@ -216,22 +204,6 @@ class StaticBanner extends Component {
             <option value="updatedDate">Updated Date</option>
           </select>
           <input  className='searchBox' type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
-          {/* <TextField
-              // className='searchBox'
-              variant="outlined"
-              value={this.state.fieldValue}
-              onKeyDown={this.handleTextChange} 
-              onChange={this.handleTextChange}
-              inputProps={{
-                style: {
-                  height: "10px",
-                  width:"300px",
-                  marginTop:'4%',
-                  border:"500px",
-                },
-              }}
-
-            /> */}
           <button 
   className='submitButton'
   onClick={(e) => {
@@ -245,36 +217,14 @@ class StaticBanner extends Component {
         className='refreshButton'
   onClick={(e)=>{
     this.setState({isLoading:true})
-    this.state.fieldValue="";
+    // this.state.fieldValue="";
+    this.setState({fieldValue:""})
     this.handleBannerList();
 }}
 >
     refresh
 </button>
 
-        {/* <button
-        className='refreshButton'
-  onClick={(e)=>{
-    this.state.fieldValue="";
-    this.handleBannerList();
-}}
->
-    refresh
-</button>
-{/* <Button 
-variant="contained"
-onClick={(e) => {
-  console.log(e.target.value);
-  this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
-}}
->search</Button>
-<Button 
-variant="contained"
-onClick={(e) => {
-  console.log(e.target.value);
-  this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
-}}
->Refresh</Button> */}
 <div className='materialTable'>
 <MaterialTable
       title="List of banners"

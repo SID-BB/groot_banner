@@ -1,16 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { NavLink, withRouter, Link, Router } from "react-router-dom";
+import { withRouter} from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import "../assets/styles/MaterialIcons.css";
-import Table from "./TableGrid";
 import MaterialTable from "material-table";
-import { apitimeout } from "./api_timeout";
-// import { Link } from '@material-ui/core';
 import "../assets/styles/bannerdetails.css";
 import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
@@ -64,18 +58,21 @@ class BannerDetails extends Component {
       isDraft: false,
       isReviewPending: false,
       reviewComment: "",
+      clientHost:"",
     };
   }
 
   componentDidMount = () => {
     const { id } = this.props.match.params;
     this.handleBannerDetails(id);
+    var host = window.location.origin;
+    this.setState({ clientHost: host });
   };
 
   handleDraft = () => {
     const { id } = this.props.match.params;
     let url =
-      "https://qas16.bigbasket.com/content-svc/static-banner/send-for-review/" +
+      clientHost+"/content-svc/static-banner/send-for-review/" +
       id;
     fetch(url, {
       method: "PUT",
@@ -98,7 +95,7 @@ class BannerDetails extends Component {
 
   handleReject=()=>{
     const {id}=this.props.match.params;
-   let url='https://qas16.bigbasket.com/content-svc/static-banner/reject/'+id;
+   let url=clientHost+'/content-svc/static-banner/reject/'+id;
    var formdata = new FormData();
    formdata.append("reviewComment", this.state.reviewComment);
    fetch(
@@ -138,7 +135,7 @@ class BannerDetails extends Component {
 }
 handleApprove=()=>{
     const {id}=this.props.match.params;
-   let url='https://qas16.bigbasket.com/content-svc/static-banner/approve/'+id;
+   let url=clientHost+'/content-svc/static-banner/approve/'+id;
    fetch(
     url,
     {
@@ -185,7 +182,7 @@ handleApprove=()=>{
   };
 
   handleBannerDetails = (id) => {
-    let url='https://qas16.bigbasket.com/content-svc/static-banner/get/'+id;
+    let url=clientHost+'/content-svc/static-banner/get/'+id;
     fetch(url,{
         method:'GET',
         headers:{
