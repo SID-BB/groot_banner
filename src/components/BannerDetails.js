@@ -72,7 +72,7 @@ class BannerDetails extends Component {
   handleDraft = () => {
     const { id } = this.props.match.params;
     let url =
-      clientHost+"/content-svc/static-banner/send-for-review/" +
+      this.state.clientHost+"/content-svc/static-banner/send-for-review/" +
       id;
     fetch(url, {
       method: "PUT",
@@ -89,13 +89,11 @@ class BannerDetails extends Component {
         // Handle error if needed
         console.error(error);
       });
-    //   window.location.href = grootHost + '/staticbanners';
-    //   window.location.reload();
   };
 
   handleReject=()=>{
     const {id}=this.props.match.params;
-   let url=clientHost+'/content-svc/static-banner/reject/'+id;
+   let url=this.state.clientHost+'/content-svc/static-banner/reject/'+id;
    var formdata = new FormData();
    formdata.append("reviewComment", this.state.reviewComment);
    fetch(
@@ -130,12 +128,12 @@ class BannerDetails extends Component {
     // Handle error if needed
     console.error(error);
   });
-//   window.location.href = grootHost + '/staticbanners';
+
    
 }
 handleApprove=()=>{
     const {id}=this.props.match.params;
-   let url=clientHost+'/content-svc/static-banner/approve/'+id;
+   let url=this.state.clientHost+'/content-svc/static-banner/approve/'+id;
    fetch(
     url,
     {
@@ -167,8 +165,7 @@ handleApprove=()=>{
     // Handle error if needed
     console.error(error);
   });
-//   window.location.href = grootHost + '/staticbanners';  
-//   setTimeout(this.props.history.push(grootHost + '/staticbanners'),2000);
+
    
 }
 
@@ -182,7 +179,7 @@ handleApprove=()=>{
   };
 
   handleBannerDetails = (id) => {
-    let url=clientHost+'/content-svc/static-banner/get/'+id;
+    let url=this.state.clientHost+'/content-svc/static-banner/get/'+id;
     fetch(url,{
         method:'GET',
         headers:{

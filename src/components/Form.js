@@ -177,7 +177,7 @@ const menuItems = bannerTypes.map((bannerType) => {
 
 const handleget = () => {
   Axios.get(
-    clientHost+`'/config_svc/internal/v1/ec-group-type/?ec-group-type-slug=cart-v2`,
+    this.state.clientHost+`'/config_svc/internal/v1/ec-group-type/?ec-group-type-slug=cart-v2`,
     {
       headers: {
         "X-Caller": "local",
@@ -242,7 +242,7 @@ class OldComponent extends Component {
     this.setState({ clientHost: host });
     if (id) {
       fetch(
-        clientHost+"/content-svc/static-banner/get/"+id,
+        this.state.clientHost+"/content-svc/static-banner/get/"+id,
         {
           method: "GET",
           headers: {
@@ -390,7 +390,7 @@ class OldComponent extends Component {
         // Create a new FormData object from the form
 
         const response = await fetch(
-          clientHost+"/content-svc/static-banner/update/"+this.state.id,
+          this.state.clientHost+"/content-svc/static-banner/update/"+this.state.id,
           {
             method: "PUT",
             headers: {
@@ -460,7 +460,7 @@ class OldComponent extends Component {
         // Create a new FormData object from the form
 
         const response = await fetch(
-          clientHost+"/content-svc/static-banner/save",
+          this.state.clientHost+"/content-svc/static-banner/save",
           {
             method: "POST",
             headers: {

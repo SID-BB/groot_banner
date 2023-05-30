@@ -54,37 +54,38 @@ class StaticBanner extends Component {
             tabValue: 0,
             data:[],
 			      isLoading: true,
-            fieldName:"bannerType",
             fieldValue:"",
             clientHost:"",
         }
     }
+
     debounce(func, timeout = 300) {
-        let timer;
-        return (...args) => {
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            func.apply(this, args);
-          }, timeout);
-        };
-      }
-    debouncedHandleFilterApi = this.debounce((field, filterTerm) => {
-        
-        this.handleFilterApi(field, filterTerm.toLowerCase());
-      }, 300);
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this, args);
+        }, timeout);
+      };
+    }
+    
+    debouncedHandleFilterApi = this.debounce((columnValue) => {
+      this.handleFilterApi(columnValue.toLowerCase());
+    }, 300);
 
     componentDidMount(){
         var host = window.location.origin;
+        console.log(host)
         this.setState({ clientHost: host });
         this.handleBannerList();
     }
     handleBannerList=()=>{
-        let url=clientHost+'/content-svc/static-banner/get/banners-list?page=1';
+        let url=this.state.clientHost+'/content-svc/static-banner/get/banners-list?page=1';
         fetch(url,{
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo"
+                "authorization": "ppWieJYvHdHawPdXrh7TTTuX56NXc3TT"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -122,16 +123,15 @@ class StaticBanner extends Component {
         window.location.href = form_url;
       }
 
-    handleFilterApi=(columnName,columnValue)=>{
+    handleFilterApi=(columnValue)=>{
         this.setState({isLoading:true})
-        let k=columnName;
         const v=columnValue;
-        const url = clientHost+'/content-svc/static-banner/filter?filters=[{"' + k + '": "' + v + '" }]';
+        const url = this.state.clientHost+'/content-svc/static-banner/filter?filters='+v;
         fetch(url,{
             method:'GET',
             headers:{
                 "x-project": "mm-canary",
-                "authorization": "LMEUoIznXkQMJhutbEbVx6t3MGBCWgLo"
+                "authorization": "ppWieJYvHdHawPdXrh7TTTuX56NXc3TT"
             }
         }).then(response=>response.json()).then(response=>response.banners)
         .then(response=>{
@@ -146,7 +146,6 @@ class StaticBanner extends Component {
                 delete response[i]['internalName'];
                 delete response[i]['s3Path'];
                 var arrayToString = response[i]['ecGroupNames'].join(' ');
-                console.log(arrayToString);
                 response[i]['ecGroupNames']=arrayToString;
                 for (const key in response[i]) {  
                     if (response[i][key]==null){
@@ -166,13 +165,9 @@ class StaticBanner extends Component {
 
         }).catch(error=>console.log(error))
     }
-
-    handleDropdownChange=(e)=>{
-      this.setState({fieldName:e.target.value})
-    }
     handleTextChange=(e)=>{
         this.setState({fieldValue:e.target.value},()=>{
-            this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
+            this.debouncedHandleFilterApi(this.state.fieldValue);
         });
     }
 
@@ -189,26 +184,12 @@ class StaticBanner extends Component {
       <label style={{cursor:"pointer"}}>Create new</label>
   </IconButton>
 </div >
-        
-        <select className='selectBox' value={this.state.fieldName} onChange={this.handleDropdownChange}>
-            <option value="bannerType">Banner Type</option>
-            <option value="deviceType">Device Type</option>
-            <option value="displayName">Display Name</option>
-            <option value="ecGroupNames">EC Group Names</option>
-            <option value="isActive">Is Active</option>
-            <option value="status">Status</option>
-            <option value="createdBy">Created By</option>
-            <option value="createdDate">Created Date</option>
-            <option value="reviewComment">Review Comment</option>
-            <option value="reviewedBy">Reviewed By</option>
-            <option value="updatedDate">Updated Date</option>
-          </select>
           <input  className='searchBox' type="text" value={this.state.fieldValue} onKeyDown={this.handleTextChange} onChange={this.handleTextChange} />
           <button 
   className='submitButton'
   onClick={(e) => {
     console.log(e.target.value);
-    this.debouncedHandleFilterApi(this.state.fieldName, this.state.fieldValue);
+    this.debouncedHandleFilterApi(this.state.fieldValue);
   }}
 >
   Search
