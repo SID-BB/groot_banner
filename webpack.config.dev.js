@@ -27,7 +27,6 @@ module.exports = {
     publicPath: 'http://localhost:8080/content-svc/apluscontent/',
   },
   
-  
 module: {
     rules: [
       {
@@ -66,35 +65,30 @@ module: {
     }),
 
     new webpack.DefinePlugin({
-      "clientPort":JSON.stringify( 8080),
-      "catalogHost":JSON.stringify( "/catalog_admin/index.html#/uploads"),
-      "monolithHost":JSON.stringify( "https://qas16.bigbasket.com"),
-      "grootHost":JSON.stringify( "/content-svc/apluscontent"),
-      "partnerLogoutUrl":JSON.stringify( "/partner/marketeer/tpv_dashboard/"),
-      "AuthKey":JSON.stringify( "Authorization"),
-      "ttl":JSON.stringify( 24),  
-      "debug":JSON.stringify( true),  
-      "BasicAuthVal":JSON.stringify( ""),
-      "statusDraft":JSON.stringify( "cms_contentDrafted"),
-      "statusRevision":JSON.stringify( "cms_contentSentForReview"),
-      "statusReview":JSON.stringify( "cms_contentCreated"),
-      "statusActive":JSON.stringify( "cms_contentActive"),
-      "statusInactive":JSON.stringify( "cms_contentInActive"),
-      "statusSentForPublish":JSON.stringify( "cms_contentSentForPublish"),
-      "statusPending":JSON.stringify( "cms_contentPending"),
-      "creatorPermission":JSON.stringify( "cmsCreators"),
-      "reviewerPermission":JSON.stringify( "cmsReviewers"),
-      "publisherPermission":JSON.stringify( "cmsPublishers"),
-      "unpublisherPermission":JSON.stringify( "cmsUnPublishers"),
-      "imageSize":JSON.stringify( 1048576),   //1024*1024 = 1MB
-      "FroalaKey":JSON.stringify( "lA5B4C3D1uF2C1F1H2A10C1B5A1D6C4hwJ-7pzxipyiB2G-7ol=="),
-      "signKey":JSON.stringify( ""),
-      "timeout":JSON.stringify( 1500),
-      "pendingTimeout":JSON.stringify( 30000),
-      "pageListSize":JSON.stringify( ""),
-      "imageDomain":JSON.stringify("https://www.bigbasket.com"),
-      "templateAPI" :JSON.stringify("/content-svc/templates"),
-      "getGroupUserUrl":JSON.stringify( "/api/get-group-users/"),
+      "catalogHost": JSON.stringify(process.env.CATALOG_HOST),
+      "grootHost": JSON.stringify(process.env.GROOT_HOST),
+      "partnerLogoutUrl": JSON.stringify(process.env.PARTNER_LOGOUT_URL),
+      "AuthKey": JSON.stringify(process.env.AUTH_KEY),
+      "ttl": JSON.stringify(process.env.TTL),
+      "debug": JSON.stringify(process.env.DEBUG),
+      "statusDraft": JSON.stringify(process.env.STATUS_DRAFT),
+      "statusRevision": JSON.stringify(process.env.STATUS_REVISION),
+      "statusReview": JSON.stringify(process.env.STATUS_REVIEW),
+      "statusActive": JSON.stringify(process.env.STATUS_ACTIVE),
+      "statusInactive": JSON.stringify(process.env.STATUS_INACTIVE),
+      "statusSentForPublish": JSON.stringify(process.env.STATUS_SENT_FOR_PUBLISH),
+      "statusPending": JSON.stringify(process.env.STATUS_PENDING),
+      "creatorPermission": JSON.stringify(process.env.CREATOR_PERMISSION),
+      "reviewerPermission": JSON.stringify(process.env.REVIEWER_PERMISSION),
+      "publisherPermission": JSON.stringify(process.env.PUBLISHER_PERMISSION),
+      "unpublisherPermission": JSON.stringify(process.env.UNPUBLISHER_PERMISSION),
+      "imageSize": JSON.stringify(process.env.IMAGE_SIZE),   //1024*1024 = 1MB
+      "FroalaKey": JSON.stringify(process.env.FROALA_KEY),
+      "timeout": JSON.stringify(process.env.TIMEOUT),
+      "pendingTimeout": JSON.stringify(process.env.PENDING_TIMEOUT),
+      "imageDomain": JSON.stringify(process.env.IMAGE_DOMAIN),
+      "templateAPI": JSON.stringify(process.env.TEMPLATE_API),
+      "getGroupUserUrl": JSON.stringify(process.env.GET_GROUP_USER_URL)
     }),
 
     new HtmlWebpackPlugin({

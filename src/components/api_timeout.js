@@ -15,9 +15,9 @@ export const apitimeout = (ms, promise) => {
                 }
             );
         }
-        // else {
-        //     window.location.reload();
-        //     reject('No Token');
-        // }
+        else {
+            window.location.reload();
+            reject('No Token');
+        }
     })
 }

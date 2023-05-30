@@ -132,12 +132,12 @@ class Main extends Component {
     return (
       <div>
         {this.state.loading && <Loader />}
-        {/* {this.state.toggleApp &&  */}
+        {this.state.toggleApp && 
         <Provider store={store}>
           <BrowserRouter>
             <App togglePerm={this.state.togglePerm} />
           </BrowserRouter>
-        </Provider> 
+        </Provider>}
         {this.state.errorSnack && <ErrorToast message="Error in Processing" />}
         {this.state.errorSnackTwo && <ErrorToast message="Error in Processing" />}
         {this.state.permissionSnack && <ErrorToast message="User is not Authorized!" />}
